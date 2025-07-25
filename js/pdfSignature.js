@@ -86,7 +86,7 @@ const startPDFApp = () => {
       event.preventDefault();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
-    
+
     document.getElementById("date").value = new Date().toLocaleDateString();
   }
 
@@ -128,7 +128,8 @@ const startPDFApp = () => {
       event.preventDefault();
 
       console.log("asd");
-      const name = document.getElementById("customer-name").value.trim();
+      const fname = document.getElementById("first-name").value.trim();
+      const lname = document.getElementById("last-name").value.trim();
       const streetAddress = document.getElementById("street-address").value.trim();
       const townCity = document.getElementById("town-city").value.trim();
       const country = document.getElementById("country").value.trim();
@@ -136,8 +137,13 @@ const startPDFApp = () => {
       const contact = document.getElementById("contact-number").value.trim();
       const email = document.getElementById("email-address").value.trim();
 
-      if (!name) {
-        showError("Please enter a valid name.", "customer-name");
+      if (!fname) {
+        showError("Please enter a valid first name.", "first-name");
+        return;
+      }
+
+      if (!lname) {
+        showError("Please enter a valid last name.", "last-name");
         return;
       }
 
@@ -195,7 +201,7 @@ const startPDFApp = () => {
       const page = pdfDoc.addPage([600, 800]);
 
       page.drawText(`Pompanette Boat Seat Configuration Agreement`, { x: 50, y: 750, size: 16 });
-      page.drawText(`Customer Name: ${name}`, { x: 50, y: 700, size: 12 });
+      page.drawText(`Customer Name: ${firstName} ${lastName}`, { x: 50, y: 700, size: 12 });
       page.drawText(`Street Address: ${streetAddress}`, { x: 50, y: 680, size: 12 });
       page.drawText(`Town/City: ${townCity}`, { x: 50, y: 660, size: 12 });
       page.drawText(`Country: ${country}`, { x: 50, y: 640, size: 12 });
@@ -242,7 +248,7 @@ const startPDFApp = () => {
   function sendEmail() {
     const templateParams = {
       to_email: document.getElementById("email-address").value,
-      name: document.getElementById("customer-name").value,
+      name: document.getElementById("first-name").value + " " + document.getElementById("last-name").value,
       street_address: document.getElementById("street-address").value,
       city: document.getElementById("town-city").value,
       country: document.getElementById("country").value,
@@ -262,7 +268,6 @@ const startPDFApp = () => {
 
     emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams).then(
       function (response) {
-
         document.getElementById("statusMessage").innerText = "Email sent successfully!";
         document.getElementById("statusMessage").className = "success";
       },

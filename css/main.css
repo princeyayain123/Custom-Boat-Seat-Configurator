@@ -29,6 +29,16 @@ label {
   margin-bottom: 20px;
 }
 
+.form-two {
+  display: flex;
+  gap: 10px;
+}
+
+.form-group > div {
+  flex: 1; /* each input takes 50% width */
+  position: relative;
+}
+
 label {
   position: absolute;
   top: 40%;
