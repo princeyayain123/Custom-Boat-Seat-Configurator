@@ -130,6 +130,10 @@ const UIController = {
   },
 
   hideAgreement() {
+    this.currentStep = 1;
+    this.updateSteps();
+    this.updatePages();
+    this.scrollToTop();
     this.elements.agreementContainer.style.top = "45%";
     this.elements.agreementContainer.style.opacity = "0";
     this.elements.blackOut.style.opacity = "0";

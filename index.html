@@ -318,7 +318,6 @@
               <div class="step active"><p>1</p></div>
               <div class="step"><p>2</p></div>
               <div class="step"><p>3</p></div>
-              <div class="step"><p>4</p></div>
             </div>
           </div>
 
@@ -435,31 +434,28 @@
               </div>
             </div>
             <div class="page" id="page-3">
-              <h3>Acknowledgment and Signature</h3>
-              <canvas id="signature-pad" width="400" height="200"></canvas>
+              <div class="row">
+                <div>
+                  <h3>Acknowledgment and Signature</h3>
+                  <canvas id="signature-pad" width="400" height="200"></canvas>
+                </div>
+                <div>
+                  <button type="button" class="button-24" id="clear-signature" style="width: 100%">Clear Signature</button>
+                </div>
+              </div>
 
-              <div class="form-group">
+              <div class="form-group" style="display: none">
                 <h3 for="date">Date:</h3>
                 <input type="text" id="date" name="date" readonly />
               </div>
 
               <div>
-                <button type="button" class="button-24" id="clear-signature" style="width: 100%">Clear Signature</button>
-              </div>
+                <div class="buttonsContainer">
+                  <button class="prev">PREV</button>
+                  <button type="submit" class="button-24" id="generate-pdf" role="button">Submit</button>
+                </div>
 
-              <br />
-
-              <div>
-                <button type="submit" class="button-24" id="generate-pdf" role="button">Submit</button>
               </div>
-              <div class="buttonsContainer">
-                <button class="prev">PREV</button>
-                <button class="next">NEXT</button>
-              </div>
-            </div>
-            <div class="page" id="page-4">
-              <h2>Completion</h2>
-              <p>Process Complete!</p>
             </div>
           </div>
         </div>
@@ -507,7 +503,6 @@
         }
       }
     </script>
-    <script type="module" src="js/fetchAPI.js"></script>
     <script type="module" src="js/script.js"></script>
     <script type="module" src="js/controls-ui.js"></script>
     <script type="module" src="js/pdfSignature.js"></script>

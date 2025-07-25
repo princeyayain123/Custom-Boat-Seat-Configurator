@@ -68,6 +68,7 @@ const startPDFApp = () => {
       }
 
       const data = await response.json();
+      console.log("Upload success:", data);
 
       updateStatus("File uploaded successfully!");
       showSuccess();
