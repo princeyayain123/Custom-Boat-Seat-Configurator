@@ -8,6 +8,8 @@
 
     <link type="text/css" rel="stylesheet" href="css/main.css" />
     <link type="text/css" rel="stylesheet" href="css/mobile_style.css" />
+    <link type="text/css" rel="stylesheet" href="css/countrySelect.css" />
+    <link type="text/css" rel="stylesheet" href="css/demo.css" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   </head>
@@ -358,15 +360,22 @@
                         <label for="street-address">Street Address*</label>
                       </div>
 
-                      <div class="form-group">
-                        <input type="text" id="town-city" name="town-city" placeholder=" " required />
-                        <label for="town-city">Town/City*</label>
+                      <div class="form-group form-two">
+                        <div>
+                          <input type="text" id="town-city" name="town-city" placeholder=" " required />
+                          <label for="town-city">Town/City*</label>
+                        </div>
+
+                        <div class="form-item">
+                          <input id="country" type="text" name="country" placeholder=" " required />
+                          <label for="country" style="display: none">Select a country here...</label>
+                        </div>
                       </div>
 
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <input type="text" id="country" name="country" placeholder=" " required />
                         <label for="country">Country*</label>
-                      </div>
+                      </div> -->
 
                       <div class="form-group">
                         <input type="text" id="postal-zip" name="postal-zip" placeholder=" " required />
@@ -519,5 +528,14 @@
     <script src="assets/jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/jquery/jquery-ui.min.js"></script>
     <script src="assets/jquery/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/countrySelect.js"></script>
+    <script>
+      $("#country").countrySelect({
+        // defaultCountry: "jp",
+        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+        // responsiveDropdown: true,
+        preferredCountries: ["ca", "gb", "us"],
+      });
+    </script>
   </body>
 </html>
