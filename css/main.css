@@ -1027,20 +1027,20 @@ button {
 }
 
 .agreementContainerCenter {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
 .top-content {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (min-width: 992px) {
@@ -1293,7 +1293,8 @@ button {
 }
 
 button.next,
-button.prev {
+button.prev,
+button#generate-pdf {
   margin-top: 20px;
   padding: 10px 20px;
   background: #3498db;
@@ -1302,6 +1303,9 @@ button.prev {
   border-radius: 4px;
   cursor: pointer;
   width: 100px;
+  font-family: Arial, sans-serif;
+  font-weight: 100 !important;
+  caret-color: transparent;
 }
 
 .footer {
@@ -1313,6 +1317,11 @@ button.prev {
 
 .footer p {
   color: gray;
+}
+
+.signature-container {
+  margin: 20px auto;
+  width: 100%;
 }
 
 @keyframes outline {
