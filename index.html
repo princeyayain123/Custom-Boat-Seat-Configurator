@@ -11,6 +11,7 @@
     <link type="text/css" rel="stylesheet" href="css/countrySelect.css" />
     <link type="text/css" rel="stylesheet" href="css/demo.css" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   </head>
   <body>
@@ -383,8 +384,9 @@
                       </div>
 
                       <div class="form-group">
-                        <input type="text" id="contact-number" name="contact-number" placeholder=" " required />
-                        <label for="contact-number">Phone Number*</label>
+                        <input id="contact-number" type="tel" name="contact-number" required/>
+
+                        <label for="contact-number" style="display: none">Phone Number*</label>
                       </div>
 
                       <div class="form-group">
@@ -529,12 +531,19 @@
     <script src="assets/jquery/jquery-ui.min.js"></script>
     <script src="assets/jquery/jquery.ui.touch-punch.min.js"></script>
     <script src="js/countrySelect.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script>
       $("#country").countrySelect({
         // defaultCountry: "jp",
         // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
         // responsiveDropdown: true,
         preferredCountries: ["ca", "gb", "us"],
+      });
+
+      const phoneInputField = document.querySelector("#contact-number");
+      const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
     </script>
   </body>

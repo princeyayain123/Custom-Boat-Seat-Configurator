@@ -206,6 +206,10 @@ a {
   justify-content: start;
 }
 
+canvas {
+  touch-action: none;
+}
+
 #container canvas {
   transition: width 0.5s ease, height 0.5s ease;
 }
@@ -1330,6 +1334,15 @@ button#generate-pdf {
 .signature-container {
   margin: 20px auto;
   width: 100%;
+}
+
+.iti.iti--allow-dropdown {
+  width: 100%;
+  border: 1px solid #ccc !important;
+}
+
+.contact-number {
+  border: 1px solid #ccc !important;
 }
 
 @keyframes outline {
