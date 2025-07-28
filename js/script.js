@@ -16,6 +16,7 @@ let targetPosition = new THREE.Vector3();
 let textureName = "quilting_a.001";
 let materialName = "Main_Color.002";
 let stitchesName = "stitches";
+let lastTouchDistance = null;
 const fadeMaterials = new Map();
 const container = document.getElementById("container");
 const agreeButton = document.querySelector(".agreementButton");
@@ -38,7 +39,6 @@ function init() {
   // Renderer setup
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-
 
   container.appendChild(renderer.domElement);
 
@@ -94,8 +94,8 @@ function onWindowResize() {
   const isMobile = window.innerWidth <= 768;
   const isLandscape = window.innerWidth > window.innerHeight && window.innerHeight <= 430;
 
-  let width = 0; 
-  let height = 0; 
+  let width = 0;
+  let height = 0;
 
   if (isLandscape) {
     width = window.innerWidth * 0.5;
@@ -113,8 +113,6 @@ function onWindowResize() {
 
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio || 1);
-
-
 }
 
 function debounce(func, delay) {
@@ -173,8 +171,8 @@ function loadModel() {
   new RGBELoader().setPath("./assets/hdr/").load("studio.hdr", function (texture) {
     const envMap = pmremGenerator.fromEquirectangular(texture).texture;
 
-    scene.environment = envMap; 
-    scene.background = new THREE.Color(0xffffff); 
+    scene.environment = envMap;
+    scene.background = new THREE.Color(0xffffff);
 
     texture.dispose();
     pmremGenerator.dispose();
@@ -189,8 +187,6 @@ function loadModel() {
 
     model.traverse((object) => {
       if (object.isMesh) {
-
-
         object.castShadow = true;
         object.receiveShadow = true;
         if (!materialsList.includes(object.material)) {
@@ -241,7 +237,6 @@ function createGUI() {
       showMesh.visible = true;
     }
 
-
     meshesToHide.forEach((meshName) => {
       const hideMesh = scene.getObjectByName(meshName);
       if (hideMesh) {
@@ -251,7 +246,6 @@ function createGUI() {
   }
 
   toggleMeshes("quilting_a", ["quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_f"]);
-
 
   document.querySelectorAll("#textureHave").forEach((element, index) => {
     element.addEventListener("click", () => {
@@ -476,28 +470,73 @@ function createGUI() {
   createMaterialSelection(materialsList);
 }
 
-
 let targetDistance = controls.getDistance ? controls.getDistance() : camera.position.distanceTo(controls.target);
-let zoomLerpSpeed = 0.05; 
-
+let zoomLerpSpeed = 0.05;
 
 function getCameraDistance() {
   return camera.position.distanceTo(controls.target);
 }
 
+renderer.domElement.addEventListener(
+  "wheel",
+  (event) => {
+    event.preventDefault();
+    const delta = event.deltaY > 0 ? 1 : -1;
+    targetDistance = THREE.MathUtils.clamp(targetDistance + delta * 0.5, controls.minDistance, controls.maxDistance);
+  },
+  { passive: false }
+);
 
-renderer.domElement.addEventListener("wheel", (event) => {
-  event.preventDefault();
+renderer.domElement.addEventListener(
+  "touchstart",
+  (event) => {
+    if (event.touches.length === 2) {
+      lastTouchDistance = getTouchDistance(event.touches);
+    }
+  },
+  { passive: false }
+);
 
+// Add touchmove listener
+renderer.domElement.addEventListener(
+  "touchmove",
+  (event) => {
+    if (event.touches.length === 2) {
+      event.preventDefault(); // Prevent browser zoom
+      const currentDistance = getTouchDistance(event.touches);
 
-  const delta = event.deltaY > 0 ? 1 : -1;
+      if (lastTouchDistance) {
+        const delta = lastTouchDistance - currentDistance;
 
-  targetDistance = THREE.MathUtils.clamp(
-    targetDistance + delta * 0.5,
-    controls.minDistance,
-    controls.maxDistance
-  );
-}, { passive: false });
+        // Convert pinch delta to zoom
+        targetDistance = THREE.MathUtils.clamp(
+          targetDistance + delta * 0.01, // adjust sensitivity
+          controls.minDistance,
+          controls.maxDistance
+        );
+      }
+
+      lastTouchDistance = currentDistance;
+    }
+  },
+  { passive: false }
+);
+
+// Add touchend listener
+renderer.domElement.addEventListener(
+  "touchend",
+  () => {
+    lastTouchDistance = null;
+  },
+  { passive: false }
+);
+
+// Helper to calculate distance between two touches
+function getTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
 
 let targetQuaternion = new THREE.Quaternion();
 
@@ -505,7 +544,6 @@ function animate() {
   requestAnimationFrame(animate);
 
   const currentTime = performance.now();
-
 
   const currentDistance = getCameraDistance();
   if (Math.abs(currentDistance - targetDistance) > 0.01) {
