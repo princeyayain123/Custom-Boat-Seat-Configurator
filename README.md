@@ -33,6 +33,7 @@ A web-based 3D boat seat configurator that allows customers to personalize their
   - HTML5
   - CSS3
   - JavaScript
+  - JQuery
   - [Three.js](https://threejs.org/)
 
 - **Backend:**
