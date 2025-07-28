@@ -201,7 +201,7 @@ const startPDFApp = () => {
       const page = pdfDoc.addPage([600, 800]);
 
       page.drawText(`Pompanette Boat Seat Configuration Agreement`, { x: 50, y: 750, size: 16 });
-      page.drawText(`Customer Name: ${firstName} ${lastName}`, { x: 50, y: 700, size: 12 });
+      page.drawText(`Customer Name: ${fname} ${lname}`, { x: 50, y: 700, size: 12 });
       page.drawText(`Street Address: ${streetAddress}`, { x: 50, y: 680, size: 12 });
       page.drawText(`Town/City: ${townCity}`, { x: 50, y: 660, size: 12 });
       page.drawText(`Country: ${country}`, { x: 50, y: 640, size: 12 });
