@@ -93,14 +93,28 @@ const startPDFApp = () => {
   function drawing() {
     let drawing = false;
 
+    // Mouse Events
     canvas.addEventListener("mousedown", () => (drawing = true));
     canvas.addEventListener("mouseup", () => {
       drawing = false;
       ctx.beginPath();
     });
-    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mousemove", drawMouse);
 
-    function draw(event) {
+    // Touch Events
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault(); // Prevent scrolling while drawing
+      drawing = true;
+    });
+
+    canvas.addEventListener("touchend", () => {
+      drawing = false;
+      ctx.beginPath();
+    });
+
+    canvas.addEventListener("touchmove", drawTouch);
+
+    function drawMouse(event) {
       if (!drawing) return;
       ctx.lineWidth = 2;
       ctx.lineCap = "round";
@@ -109,6 +123,23 @@ const startPDFApp = () => {
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(event.offsetX, event.offsetY);
+    }
+
+    function drawTouch(event) {
+      if (!drawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const touch = event.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "black";
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
     }
   }
 
