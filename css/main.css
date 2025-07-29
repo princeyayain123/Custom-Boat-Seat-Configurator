@@ -857,14 +857,6 @@ canvas {
   display: none;
 }
 
-@media (max-width: 600px) {
-  .agreementContainer {
-    width: 95%;
-    height: 90%;
-    padding: 15px;
-  }
-}
-
 .agreementContainer h1 {
   border-bottom: 2px solid rgb(116, 116, 116);
   padding-bottom: 15px;
@@ -944,7 +936,7 @@ button {
 }
 
 .blackOutX {
-  position: absolute;
+  position: fixed;
   top: 5px;
   right: 5px;
   background-color: white;
@@ -957,6 +949,8 @@ button {
   justify-content: center;
   cursor: pointer;
   transition: 0.1s ease;
+  z-index: 102;
+  display: none;
 }
 
 .blackOutX:hover {

@@ -106,6 +106,7 @@ const UIController = {
   showAgreement() {
     this.elements.agreementContainer.style.display = "block";
     this.elements.blackOut.style.display = "block";
+    this.elements.blackOutX.style.display = "flex";
     setTimeout(() => {
       this.elements.agreementContainer.style.top = "50%";
       this.elements.agreementContainer.style.opacity = "1";
@@ -137,6 +138,7 @@ const UIController = {
     this.elements.agreementContainer.style.top = "45%";
     this.elements.agreementContainer.style.opacity = "0";
     this.elements.blackOut.style.opacity = "0";
+    this.elements.blackOutX.style.display = "none";
     setTimeout(() => {
       this.elements.agreementContainer.style.display = "none";
       this.elements.blackOut.style.display = "none";
