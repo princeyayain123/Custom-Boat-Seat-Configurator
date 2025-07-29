@@ -583,6 +583,12 @@ canvas {
   padding: 0 15px;
 }
 
+.quilting_stitches_options,
+.coloring_options,
+.material_options {
+  padding-bottom: 20px;
+}
+
 .color-block,
 .stitch-block,
 .color-option-wrapper {
@@ -1345,7 +1351,9 @@ button#generate-pdf {
   border: 1px solid #ccc !important;
 }
 
-.country-select .country-list .country, .iti__country.iti__highlight, .iti__country {
+.country-select .country-list .country,
+.iti__country.iti__highlight,
+.iti__country {
   font-family: Arial, sans-serif;
 }
 
