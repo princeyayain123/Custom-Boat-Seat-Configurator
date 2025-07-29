@@ -56,7 +56,7 @@ label {
 input {
   width: 100%;
   padding: 12px 10px;
-  border: 1px solid gray;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 13px;
 }
@@ -1338,11 +1338,15 @@ button#generate-pdf {
 
 .iti.iti--allow-dropdown {
   width: 100%;
-  border: 1px solid #ccc !important;
+  margin-bottom: 10px;
 }
 
 .contact-number {
   border: 1px solid #ccc !important;
+}
+
+.country-select .country-list .country, .iti__country.iti__highlight, .iti__country {
+  font-family: Arial, sans-serif;
 }
 
 @keyframes outline {
