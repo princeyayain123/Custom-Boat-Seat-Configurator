@@ -2,15 +2,16 @@ import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm";
 const canvas = document.getElementById("signature-pad");
 const ctx = canvas.getContext("2d");
 
-const EMAIL_SERVICE_ID = "service_nwdixv2";
-const EMAIL_TEMPLATE_ID = "template_rgt0cup";
-const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
-
 const UPLOAD_URL = "https://pompanetteserver.onrender.com/upload";
-const AUTH_TOKEN = "Bearer pompanette123";
+
+const EMAIL_SERVICE_ID = import.meta.env.VITE_EMAIL_SERVICE_ID;
+const EMAIL_TEMPLATE_ID = import.meta.env.VITE_EMAIL_TEMPLATE_ID;
+const EMAIL_PUBLIC_KEY = import.meta.env.VITE_EMAIL_PUBLIC_KE;
+const UPLOAD_TOKEN = import.meta.env.VITE_UPLOAD_TOKEN;
 
 const startPDFApp = () => {
   function init() {
+    emailjs.init(EMAIL_PUBLIC_KEY);
     addEvent();
     drawing();
     generatePDF();
@@ -54,13 +55,19 @@ const startPDFApp = () => {
     updateStatus("Uploading file to server...");
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const backendFormData = new FormData();
+      backendFormData.append("file", file);
+
+      for (const [key, value] of Object.entries(formData)) {
+        backendFormData.append(key, value);
+      }
 
       const response = await fetch(UPLOAD_URL, {
         method: "POST",
-        headers: { Authorization: AUTH_TOKEN },
-        body: formData,
+        headers: {
+          Authorization: `Bearer ${UPLOAD_TOKEN}`,
+        },
+        body: backendFormData,
       });
 
       if (!response.ok) {
@@ -81,7 +88,6 @@ const startPDFApp = () => {
   }
 
   function addEvent() {
-    emailjs.init(EMAIL_PUBLIC_KEY);
     document.getElementById("clear-signature").addEventListener("click", (event) => {
       event.preventDefault();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,13 +305,10 @@ const startPDFApp = () => {
 
     emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams).then(
       function (response) {
-        document.getElementById("statusMessage").innerText = "Email sent successfully!";
-        document.getElementById("statusMessage").className = "success";
+        console.log("SUCCESS...", response);
       },
       function (error) {
         console.error("FAILED...", error);
-        document.getElementById("statusMessage").innerText = "Failed to send email. Please try again.";
-        document.getElementById("statusMessage").className = "error";
       }
     );
   }
