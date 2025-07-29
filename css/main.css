@@ -603,6 +603,10 @@ canvas {
   border-radius: 10px;
 }
 
+.coloring_options, .quilting_stitches_options, .material_options {
+  padding-bottom: 15px;
+}
+
 .color-block:hover {
   background-color: #ddd;
 }
@@ -1078,8 +1082,10 @@ button {
 .col-lg-7,
 .col-lg-5 {
   box-sizing: border-box;
-  padding: 15px;
+  padding: 15px 0;
 }
+
+
 
 .col-lg-7 {
   flex: 0 0 58.33%;
