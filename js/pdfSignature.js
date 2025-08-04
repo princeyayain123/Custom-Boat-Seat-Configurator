@@ -4,10 +4,10 @@ const ctx = canvas.getContext("2d");
 
 const UPLOAD_URL = "https://pompanetteserver.onrender.com/upload";
 
-const EMAIL_SERVICE_ID = window.env.EMAIL_SERVICE_ID;
-const EMAIL_TEMPLATE_ID = window.env.EMAIL_TEMPLATE_ID;
-const EMAIL_PUBLIC_KEY = window.env.EMAIL_PUBLIC_KEY;
-const UPLOAD_TOKEN = window.env.UPLOAD_TOKEN;
+const EMAIL_SERVICE_ID = "service_nwdixv2";
+const EMAIL_TEMPLATE_ID = "template_rgt0cup";
+const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
+const UPLOAD_TOKEN = "pompanette123";
 
 const startPDFApp = () => {
   function init() {
