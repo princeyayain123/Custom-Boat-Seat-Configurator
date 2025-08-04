@@ -1,12 +1,12 @@
-# 🛥️ Custom-Boat-Seat-Configurator
+# Custom-Boat-Seat-Configurator
 
 A web-based 3D boat seat configurator that allows customers to personalize their boat seats and place orders. Built using HTML, CSS, JavaScript, Three.js (for 3D rendering), Node.js with Express (for backend services), and MongoDB (for storing customer and configuration data).
 
 ---
 
-## 🚀 Features
+## Features
 
-- 🎨 **3D Seat Customization** with **Three.js**  
+- **3D Seat Customization** with **Three.js**  
   Configure boat seats with options for:
   - Seat color
   - Texture
@@ -14,20 +14,20 @@ A web-based 3D boat seat configurator that allows customers to personalize their
   - Armrests
   - And more...
 
-- 🖼️ **Real-time Visual Feedback**  
+- **Real-time Visual Feedback**  
   Instantly see the configured seat in 3D while making changes.
 
-- 📄 **PDF Agreement Generator**  
+- **PDF Agreement Generator**  
   Automatically generate and download a PDF containing:
   - Customer agreement
   - Finalized seat configuration
 
-- 🧾 **Order Submission and Storage**  
+- **Order Submission and Storage**  
   Submit configurations and customer information to be stored in **MongoDB** for future processing.
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 - **Frontend:**
   - HTML5
