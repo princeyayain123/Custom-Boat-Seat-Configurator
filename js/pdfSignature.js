@@ -15,6 +15,7 @@ const startPDFApp = () => {
     addEvent();
     drawing();
     generatePDF();
+    checkInputs();
   }
   async function uploadPDFToBackend(file) {
     const statusContainer = document.getElementById("loading");
@@ -52,15 +53,34 @@ const startPDFApp = () => {
       }, 3000);
     }
 
+    function emptyInput() {
+      document.querySelectorAll("input, textarea").forEach((el) => {
+        if (el.type !== "button" && el.type !== "submit" && el.type !== "reset") {
+          el.value = "";
+        }
+      });
+
+      document.querySelectorAll("select").forEach((select) => {
+        select.selectedIndex = 0;
+      });
+
+      const canvas = document.getElementById("signature-pad");
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      const errorMessage = document.getElementById("errorMessage");
+      if (errorMessage) {
+        errorMessage.classList.add("displayNone");
+      }
+    }
+
     updateStatus("Uploading file to server...");
 
     try {
       const backendFormData = new FormData();
       backendFormData.append("file", file);
-
-      for (const [key, value] of Object.entries(formData)) {
-        backendFormData.append(key, value);
-      }
 
       const response = await fetch(UPLOAD_URL, {
         method: "POST",
@@ -80,6 +100,7 @@ const startPDFApp = () => {
       updateStatus("File uploaded successfully!");
       showSuccess();
       sendEmail();
+      emptyInput();
     } catch (error) {
       console.error("Upload failed:", error);
       updateStatus("Error uploading file.");
@@ -160,11 +181,28 @@ const startPDFApp = () => {
     document.getElementById("errorMessage").classList.add("displayNone");
   }
 
+  function checkInputs() {
+    const fname = document.getElementById("first-name").value.trim();
+    const lname = document.getElementById("last-name").value.trim();
+    const street = document.getElementById("street-address").value.trim();
+    const city = document.getElementById("town-city").value.trim();
+    const country = document.getElementById("country").value.trim();
+    const zip = document.getElementById("postal-zip").value.trim();
+    const contact = document.getElementById("contact-number").value.trim();
+    const email = document.getElementById("email-address").value.trim();
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    const isValid = fname && lname && street && city && country && zip && contact && gmailRegex.test(email);
+    document.querySelector(".inputText").classList.toggle("disable", !isValid);
+  }
+
+  // Attach to all input fields
+  ["first-name", "last-name", "street-address", "town-city", "country", "postal-zip", "contact-number", "email-address"].forEach((id) => {
+    document.getElementById(id).addEventListener("input", checkInputs);
+  });
+
   function generatePDF() {
     document.getElementById("generate-pdf").addEventListener("click", async (event) => {
-      event.preventDefault();
-
-      console.log("asd");
       const fname = document.getElementById("first-name").value.trim();
       const lname = document.getElementById("last-name").value.trim();
       const streetAddress = document.getElementById("street-address").value.trim();
@@ -173,6 +211,8 @@ const startPDFApp = () => {
       const postalZip = document.getElementById("postal-zip").value.trim();
       const contact = document.getElementById("contact-number").value.trim();
       const email = document.getElementById("email-address").value.trim();
+
+      event.preventDefault();
 
       if (!fname) {
         showError("Please enter a valid first name.", "first-name");
@@ -218,6 +258,8 @@ const startPDFApp = () => {
         showError("Email: Please enter a valid Gmail address (e.g., example@gmail.com).", "email-address");
         return;
       }
+
+      document.querySelector(".inputText").classList.remove("disable");
 
       hideError();
 
@@ -276,7 +318,7 @@ const startPDFApp = () => {
     const loadingicon = document.getElementById("loading-icon");
     const blackOut = document.querySelector(".blackOutX");
 
-    blackOut.click();
+    if (blackOut) blackOut.click();
     loading.style.display = "flex";
     loadingContainer.classList.add("active");
     loadingicon.classList.remove("d-none");

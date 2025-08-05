@@ -404,51 +404,55 @@
                   </div>
                 </div>
                 <div class="col-lg-5" id="orderDetails">
-                  <div style="padding: 10px;">
-                    <div id="picture" class="picture"></div>
-                    <h3>Seat Configuration</h3>
-
-                    <div class="form-group">
-                      <p for="material">Main Color: <span class="main-color"></span></p>
+                  <div class="accordion-container">
+                    <div class="accordion-header" onclick="toggleAccordion()">
+                      <div id="picture" class="picture" alt="Seat image"></div>
+                      <div class="qty">Qty: <button>-</button> 1 <button>+</button></div>
                     </div>
 
-                    <div class="form-group">
-                      <p for="color">Secondary Color: <span class="secondary-color"></span></p>
-                    </div>
+                    <div class="accordion-body" id="accordionBody">
+                      <div class="form-group">
+                        <p>Main Color: <span class="main-color">Navy Blue</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Arm Rest Color: <span class="arm-color"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Secondary Color: <span class="secondary-color">White</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Piping Color: <span class="piping-color"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Arm Rest Color: <span class="arm-color">Black</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Head Rest Color: <span class="head-color"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Piping Color: <span class="piping-color">Red</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Stitch Color: <span class="stitch-color"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Head Rest Color: <span class="head-color">Gray</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Quilting Stitches Style: <span class="quilt-style"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Stitch Color: <span class="stitch-color">White</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Quilting Stitches Color: <span class="quilt-color"></span></p>
-                    </div>
+                      <div class="form-group">
+                        <p>Quilting Stitches Style: <span class="quilt-style">Diamond</span></p>
+                      </div>
 
-                    <div class="form-group">
-                      <p for="size">Hardware Color: <span class="hardware-color"></span></p>
+                      <div class="form-group">
+                        <p>Quilting Stitches Color: <span class="quilt-color">Red</span></p>
+                      </div>
+
+                      <div class="form-group">
+                        <p>Hardware Color: <span class="hardware-color">Chrome</span></p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="buttonsContainer">
                 <button class="prev">PREV</button>
-                <button class="next">NEXT</button>
+                <button class="next inputText disable">NEXT</button>
               </div>
             </div>
             <div class="page" id="page-3">
@@ -526,7 +530,6 @@
     <script type="module" src="js/pdfSignature.js"></script>
     <script type="module" src="js/fetchAPI.js"></script>
 
-
     <script type="text/javascript" src="js/email.min.js"></script>
     <script src="assets/jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/jquery/jquery-ui.min.js"></script>
@@ -546,6 +549,14 @@
       const phoneInput = window.intlTelInput(phoneInputField, {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
       });
+
+      function toggleAccordion(e) {
+        const body = document.getElementById("accordionBody");
+        body.classList.toggle("open");
+
+        // Prevent parent onclick if button was clicked
+        if (e && e.stopPropagation) e.stopPropagation();
+      }
     </script>
   </body>
 </html>
