@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+
 
 let scene, camera, renderer, model, dirLight, controls;
 let pointerXOnPointerDown = 0;
@@ -23,8 +23,6 @@ const container = document.getElementById("container");
 const agreeButton = document.querySelector(".agreementButton");
 const materialsList = [];
 
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/libs/draco/");
 
 init();
 loadModel();
@@ -180,10 +178,10 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.setDRACOLoader(dracoLoader);
+
 
   loader.load(
-    "./assets/model/merge-op.glb",
+    "./assets/model/merge.glb",
     (gltf) => {
       model = gltf.scene;
       model.scale.set(2.5, 2.5, 2.5);
