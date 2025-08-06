@@ -1,8 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 let scene, camera, renderer, model, dirLight, controls;
 let pointerXOnPointerDown = 0;
@@ -23,9 +22,6 @@ const container = document.getElementById("container");
 const agreeButton = document.querySelector(".agreementButton");
 const materialsList = [];
 
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/libs/draco/");
-
 init();
 loadModel();
 
@@ -41,10 +37,8 @@ function init() {
   camera.position.set(-3, 2, 6);
 
   // Renderer setup
-  renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // ↓ memory usage
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
 
   container.appendChild(renderer.domElement);
 
@@ -64,7 +58,7 @@ function init() {
 
   dirLight = new THREE.DirectionalLight(0xffffff, 3);
   dirLight.position.set(0, 1, 1);
-
+  dirLight.castShadow = true;
   dirLight.shadow.mapSize.width = 1024;
   dirLight.shadow.mapSize.height = 1024;
   scene.add(dirLight);
@@ -89,10 +83,7 @@ function init() {
 
   $(document).ready(() => {
     onWindowResize(); // Set initial dimensions
-    $(window).on("resize", debounce(onWindowResize, 0));
-    window.addEventListener("orientationchange", () => {
-      onWindowResize(); // Handle orientation change
-    });
+    window.addEventListener("orientationchange", debounce(onWindowResize, 200));
   });
 }
 
@@ -118,7 +109,7 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(window.devicePixelRatio || 1);
 }
 
 function debounce(func, delay) {
@@ -142,14 +133,15 @@ function onPointerDown(event) {
 function loadModel() {
   let totalItems = 0;
   let loadedItems = 0;
-  let currentProgress = 0;
+  let smoothProgress = 0;
 
   function updateProgress(targetProgress) {
-    // Prevent backward jumps
-    currentProgress = Math.max(currentProgress, targetProgress);
-
-    $("#loading-progress").css("width", `${currentProgress}%`);
-    $("#loading-text").text(`${currentProgress}%`);
+    if (smoothProgress < targetProgress) {
+      smoothProgress++;
+      $("#loading-progress").css("width", `${smoothProgress}%`);
+      $("#loading-text").text(`${smoothProgress}%`);
+      requestAnimationFrame(() => updateProgress(targetProgress));
+    }
   }
 
   const loadingManager = new THREE.LoadingManager(
@@ -170,37 +162,39 @@ function loadModel() {
     }
   );
 
-  scene.background = new THREE.Color(0xffffff);
-  scene.environment = null; // No HDR environment
+  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  pmremGenerator.compileEquirectangularShader();
 
-  const ktx2Loader = new KTX2Loader().setTranscoderPath("https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/libs/basis/").detectSupport(renderer);
+  new RGBELoader().setPath("./assets/hdr/").load("studio.hdr", function (texture) {
+    const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+
+    scene.environment = envMap;
+    scene.background = new THREE.Color(0xffffff);
+
+    texture.dispose();
+    pmremGenerator.dispose();
+  });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.setDRACOLoader(dracoLoader);
-  loader.setKTX2Loader(ktx2Loader);
-  loader.load(
-    "./assets/model/merge-op.glb",
-    (gltf) => {
-      model = gltf.scene;
-      model.scale.set(2.5, 2.5, 2.5);
-      model.position.y = -1;
-      scene.add(model);
-      createGUI();
-      animate();
+  loader.load("./assets/model/merge.glb", (gltf) => {
+    model = gltf.scene;
+    model.scale.set(2.5, 2.5, 2.5);
+    model.position.y = -1;
+    scene.add(model);
 
-      // REMOVE THIS (LoadingManager already handles fade-out)
-      // $("#loading-screen").fadeOut(800, () => $("#loading-screen").remove());
-    },
-    (xhr) => {
-      if (xhr.lengthComputable) {
-        const percentComplete = Math.floor((xhr.loaded / xhr.total) * 100);
-        updateProgress(percentComplete);
+    model.traverse((object) => {
+      if (object.isMesh) {
+        object.castShadow = true;
+        object.receiveShadow = true;
+        if (!materialsList.includes(object.material)) {
+          materialsList.push(object.material);
+        }
       }
-    },
-    (error) => {
-      console.error("Error loading model", error);
-    }
-  );
+    });
+
+    createGUI();
+    animate();
+  });
 }
 
 function fadeMaterialToRed(material) {
