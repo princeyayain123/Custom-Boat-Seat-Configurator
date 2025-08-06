@@ -83,7 +83,10 @@ function init() {
 
   $(document).ready(() => {
     onWindowResize(); // Set initial dimensions
-    window.addEventListener("orientationchange", debounce(onWindowResize, 200));
+    $(window).on("resize", debounce(onWindowResize, 0));
+    window.addEventListener("orientationchange", () => {
+      onWindowResize(); // Handle orientation change
+    });
   });
 }
 
