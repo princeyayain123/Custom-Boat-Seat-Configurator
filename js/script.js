@@ -185,7 +185,6 @@ function loadModel() {
   loader.load(
     "./assets/model/merge-op.glb",
     (gltf) => {
-      // Model loaded
       model = gltf.scene;
       model.scale.set(2.5, 2.5, 2.5);
       model.position.y = -1;
@@ -193,11 +192,10 @@ function loadModel() {
       createGUI();
       animate();
 
-      // Hide loading screen AFTER everything parsed
-      $("#loading-screen").fadeOut(800, () => $("#loading-screen").remove());
+      // REMOVE THIS (LoadingManager already handles fade-out)
+      // $("#loading-screen").fadeOut(800, () => $("#loading-screen").remove());
     },
     (xhr) => {
-      // xhr.loaded / xhr.total gives real byte progress
       if (xhr.lengthComputable) {
         const percentComplete = Math.floor((xhr.loaded / xhr.total) * 100);
         updateProgress(percentComplete);
