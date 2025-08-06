@@ -179,7 +179,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/merge.glb", (gltf) => {
+  loader.load("./assets/model/merges.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -313,16 +313,16 @@ function createGUI() {
         case 0:
           toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010", "Stitch_Double_Backrest_Front_012"]);
           break;
+        // case 1:
+        //   toggleMeshes("Stitch_Single_Backrest_Back005", ["Stitch_Single_Armrest001", "Stitch_Double_Backrest_Front_010", "Stitch_Double_Backrest_Front_012"]);
+        //   break;
+        // case 2:
+        //   toggleMeshes("Stitch_Double_Backrest_Front_010", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_012"]);
+        //   break;
+        // case 3:
+        //   toggleMeshes("Stitch_Double_Backrest_Front_012", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010"]);
+        //   break;
         case 1:
-          toggleMeshes("Stitch_Single_Backrest_Back005", ["Stitch_Single_Armrest001", "Stitch_Double_Backrest_Front_010", "Stitch_Double_Backrest_Front_012"]);
-          break;
-        case 2:
-          toggleMeshes("Stitch_Double_Backrest_Front_010", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_012"]);
-          break;
-        case 3:
-          toggleMeshes("Stitch_Double_Backrest_Front_012", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010"]);
-          break;
-        case 4:
           toggleMeshes("", ["Stitch_Double_Backrest_Front_012", "Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010"]);
           break;
         default:
