@@ -42,7 +42,6 @@ function init() {
 
   // Renderer setup
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
 
   container.appendChild(renderer.domElement);
 
@@ -116,7 +115,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
-  renderer.setPixelRatio(window.devicePixelRatio || 1);
 }
 
 function debounce(func, delay) {
@@ -140,15 +138,14 @@ function onPointerDown(event) {
 function loadModel() {
   let totalItems = 0;
   let loadedItems = 0;
-  let smoothProgress = 0;
+  let currentProgress = 0;
 
   function updateProgress(targetProgress) {
-    if (smoothProgress < targetProgress) {
-      smoothProgress++;
-      $("#loading-progress").css("width", `${smoothProgress}%`);
-      $("#loading-text").text(`${smoothProgress}%`);
-      requestAnimationFrame(() => updateProgress(targetProgress));
-    }
+    // Prevent backward jumps
+    currentProgress = Math.max(currentProgress, targetProgress);
+
+    $("#loading-progress").css("width", `${currentProgress}%`);
+    $("#loading-text").text(`${currentProgress}%`);
   }
 
   const loadingManager = new THREE.LoadingManager(
@@ -184,25 +181,32 @@ function loadModel() {
 
   const loader = new GLTFLoader(loadingManager);
   loader.setDRACOLoader(dracoLoader);
-  loader.load("./assets/model/merge-op.glb", (gltf) => {
-    model = gltf.scene;
-    model.scale.set(2.5, 2.5, 2.5);
-    model.position.y = -1;
-    scene.add(model);
 
-    model.traverse((object) => {
-      if (object.isMesh) {
-        object.castShadow = true;
-        object.receiveShadow = true;
-        if (!materialsList.includes(object.material)) {
-          materialsList.push(object.material);
-        }
+  loader.load(
+    "./assets/model/merge-op.glb",
+    (gltf) => {
+      // Model loaded
+      model = gltf.scene;
+      model.scale.set(2.5, 2.5, 2.5);
+      model.position.y = -1;
+      scene.add(model);
+      createGUI();
+      animate();
+
+      // Hide loading screen AFTER everything parsed
+      $("#loading-screen").fadeOut(800, () => $("#loading-screen").remove());
+    },
+    (xhr) => {
+      // xhr.loaded / xhr.total gives real byte progress
+      if (xhr.lengthComputable) {
+        const percentComplete = Math.floor((xhr.loaded / xhr.total) * 100);
+        updateProgress(percentComplete);
       }
-    });
-
-    createGUI();
-    animate();
-  });
+    },
+    (error) => {
+      console.error("Error loading model", error);
+    }
+  );
 }
 
 function fadeMaterialToRed(material) {
