@@ -129,10 +129,10 @@ const startPDFApp = () => {
     canvas.addEventListener("mousemove", drawMouse);
 
     // Touch Events
-    canvas.addEventListener("touchstart", (e) => {
-      e.preventDefault(); // Prevent scrolling while drawing
-      drawing = true;
-    });
+    // canvas.addEventListener("touchstart", (e) => {
+    //   e.preventDefault(); // Prevent scrolling while drawing
+    //   drawing = true;
+    // });
 
     canvas.addEventListener("touchend", () => {
       drawing = false;
