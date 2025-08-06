@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
 let scene, camera, renderer, model, dirLight, controls;
 let pointerXOnPointerDown = 0;
@@ -172,9 +173,11 @@ function loadModel() {
   scene.background = new THREE.Color(0xffffff);
   scene.environment = null; // No HDR environment
 
+  const ktx2Loader = new KTX2Loader().setTranscoderPath("https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/libs/basis/").detectSupport(renderer);
+
   const loader = new GLTFLoader(loadingManager);
   loader.setDRACOLoader(dracoLoader);
-
+  loader.setKTX2Loader(ktx2Loader);
   loader.load(
     "./assets/model/merge-op.glb",
     (gltf) => {
