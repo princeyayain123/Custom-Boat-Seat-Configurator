@@ -179,7 +179,7 @@ function loadModel() {
   loader.setDRACOLoader(dracoLoader);
   loader.setKTX2Loader(ktx2Loader);
   loader.load(
-    "./assets/model/merge.glb",
+    "./assets/model/merge-op.glb",
     (gltf) => {
       model = gltf.scene;
       model.scale.set(2.5, 2.5, 2.5);
