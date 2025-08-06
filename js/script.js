@@ -64,7 +64,7 @@ function init() {
 
   dirLight = new THREE.DirectionalLight(0xffffff, 3);
   dirLight.position.set(0, 1, 1);
-  dirLight.castShadow = true;
+
   dirLight.shadow.mapSize.width = 1024;
   dirLight.shadow.mapSize.height = 1024;
   scene.add(dirLight);
