@@ -21,6 +21,7 @@ const fadeMaterials = new Map();
 const container = document.getElementById("container");
 const agreeButton = document.querySelector(".agreementButton");
 const materialsList = [];
+const loader = new THREE.TextureLoader();
 
 init();
 loadModel();
@@ -179,7 +180,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/merges.glb", (gltf) => {
+  loader.load("./assets/model/try.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -231,74 +232,168 @@ function onPointerUp() {
 
 function createGUI() {
   let currentMaterial = "Main_Color.002";
-  function toggleMeshes(meshToShow, meshesToHide) {
+
+  function toggleMeshes(meshToShow, meshesToHide = []) {
     const showMesh = scene.getObjectByName(meshToShow);
     if (showMesh) {
       showMesh.visible = true;
+      console.log("asd");
+    } else {
+      console.warn(`Mesh to show "${meshToShow}" not found`);
     }
 
-    meshesToHide.forEach((meshName) => {
-      const hideMesh = scene.getObjectByName(meshName);
-      if (hideMesh) {
-        hideMesh.visible = false;
-      }
+    meshesToHide.forEach((name) => {
+      const mesh = scene.getObjectByName(name);
+      if (mesh) mesh.visible = false;
     });
   }
 
   toggleMeshes("quilting_a", ["quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_f"]);
 
+  function changeQuiltingTextures({ meshName = "quilting_a", baseColorPath, metallicRoughnessPath, normalMapPath, repeatX = 4, repeatY = 4, alpha = 1 }) {
+    const quiltingMesh = scene.getObjectByName(meshName);
+    if (!quiltingMesh || !quiltingMesh.material) {
+      console.warn(`Mesh "${meshName}" not found or missing material`);
+      return;
+    }
+
+    const material = quiltingMesh.material;
+
+    function applyTexture(path, type) {
+      loader.load(path, (texture) => {
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(repeatX, repeatY);
+
+        switch (type) {
+          case "map":
+            material.map = texture;
+            material.color.set(0xffffff);
+            break;
+          case "metallicRoughness":
+            material.metalnessMap = texture;
+            material.roughnessMap = texture;
+            break;
+          case "normal":
+            material.normalMap = texture;
+            break;
+          default:
+            console.warn(`Unknown texture type: ${type}`);
+        }
+
+        material.needsUpdate = true;
+      });
+    }
+
+    applyTexture(baseColorPath, "map");
+    applyTexture(metallicRoughnessPath, "metallicRoughness");
+    applyTexture(normalMapPath, "normal");
+
+    material.transparent = true;
+    material.alphaTest = alpha;
+    material.needsUpdate = true;
+  }
+
+  const quiltingStyles = [
+    {
+      name: "quilting_a",
+      label: "Quilting A",
+      baseColorPath: "./assets/quilting/quilting_abasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_ametallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_anormalmap.jpg",
+      repeatX: 3,
+      repeatY: 3,
+      alpha: 0.75,
+    },
+    {
+      name: "quilting_b",
+      label: "Quilting B",
+      baseColorPath: "./assets/quilting/quilting_bbasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_bmetallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_bnormalmap.jpg",
+      repeatX: 2,
+      repeatY: 2,
+      alpha: 0.92,
+    },
+    {
+      name: "quilting_c",
+      label: "Quilting C",
+
+      baseColorPath: "./assets/quilting/quilting_cbasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_cmetallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_cnormalmap.jpg",
+      repeatX: 3,
+      repeatY: 3,
+      alpha: 0.8,
+    },
+    {
+      name: "quilting_d",
+      label: "Quilting D",
+      baseColorPath: "./assets/quilting/quilting_dbasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_dmetallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_dnormalmap.jpg",
+      repeatX: 3,
+      repeatY: 3,
+      alpha: 0.7,
+    },
+    {
+      name: "quilting_e",
+      label: "Quilting E",
+      baseColorPath: "./assets/quilting/quilting_ebasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_emetallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_enormalmap.jpg",
+      repeatX: 3,
+      repeatY: 3,
+      alpha: 0.9,
+    },
+    {
+      name: "quilting_f",
+      label: "Quilting F",
+      baseColorPath: "./assets/quilting/quilting_fbasecolortexture.png",
+      metallicRoughnessPath: "./assets/quilting/quilting_fmetallicroughnesstex.jpg",
+      normalMapPath: "./assets/quilting/quilting_fnormalmap.jpg",
+      repeatX: 3,
+      repeatY: 3,
+      alpha: 0.8,
+    },
+    {
+      name: "quilting a s 002",
+      label: "None",
+      textureName: "quilting_a_stitches.001",
+      hide: ["quilting_a"],
+    },
+  ];
+
   document.querySelectorAll("#textureHave").forEach((element, index) => {
     element.addEventListener("click", () => {
+      const style = quiltingStyles[index];
       const imgElement = element.querySelector("img");
-      document.querySelector(".quiltingStyleMaterial").innerHTML = imgElement.alt;
-      switch (index) {
-        case 0:
-          toggleMeshes("quilting_a", ["quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_f"]);
-          textureName = "quilting_a.001";
-          break;
-        case 1:
-          toggleMeshes("quilting_b", ["quilting_a", "quilting_c", "quilting_d", "quilting_e", "quilting_f"]);
-          textureName = "quilting_b.002";
-          break;
-        case 2:
-          toggleMeshes("quilting_c", ["quilting_b", "quilting_a", "quilting_d", "quilting_e", "quilting_f"]);
-          textureName = "quilting_c";
-          break;
-        case 3:
-          toggleMeshes("quilting_d", ["quilting_b", "quilting_c", "quilting_a", "quilting_e", "quilting_f"]);
-          textureName = "quilting_d";
-          break;
-        case 4:
-          toggleMeshes("quilting_e", ["quilting_b", "quilting_c", "quilting_d", "quilting_a", "quilting_f"]);
-          textureName = "quilting_e";
-          break;
-        case 5:
-          toggleMeshes("quilting_f", ["quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_a"]);
-          textureName = "quilting_f";
-          break;
-        case 6:
-          toggleMeshes("quilting a s 002", ["quilting_f", "quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_a"]);
-          textureName = "quilting_a_stitches.001";
-          document.querySelector(".quiltingStyleMaterial").innerHTML = "None";
-          break;
-        default:
-          console.warn("Invalid index.");
-          return;
+
+      document.querySelector(".quiltingStyleMaterial").innerHTML = imgElement?.alt || style.label;
+
+      if (style.baseColorPath) {
+        changeQuiltingTextures({
+          meshName: "quilting_a",
+          baseColorPath: style.baseColorPath,
+          metallicRoughnessPath: style.metallicRoughnessPath,
+          normalMapPath: style.normalMapPath,
+          repeatX: style.repeatX,
+          repeatY: style.repeatY,
+          alpha: style.alpha,
+        });
+
+        toggleMeshes("quilting_a");
+      } else {
+        toggleMeshes(style.name, style.hide || []);
       }
 
-      const selectedMaterial = materialsList.find((mat) => mat.name === textureName);
+      const selectedMaterial = materialsList.find((mat) => mat.name === style.textureName);
       if (selectedMaterial) {
         currentMaterial = selectedMaterial;
 
-        const circles = document.querySelectorAll(".selectedMaterials > div");
-        circles.forEach((c, index) => {
-          c.classList.remove("active");
-          if (index === 1) {
-            c.classList.add("active");
-          }
+        document.querySelectorAll(".selectedMaterials > div").forEach((c, i) => {
+          c.classList.toggle("active", i === 1);
         });
-      } else {
-        console.warn(`Material not found for textureName: ${textureName}`);
       }
     });
   });
