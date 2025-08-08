@@ -195,3 +195,4 @@ const UIController = {
 
 // Initialize the object
 UIController.init();
+

@@ -16,7 +16,17 @@ const startPDFApp = () => {
     drawing();
     generatePDF();
     checkInputs();
+    fetchAPI();
   }
+
+  async function fetchAPI() {
+    try {
+      await fetch("https://pompanetteserver.onrender.com/ping");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async function uploadPDFToBackend(file) {
     const statusContainer = document.getElementById("loading");
     const statusText = statusContainer.querySelector(".status");

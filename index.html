@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="icon" type="image/svg+xml" href="assets/icons/Pompanette_Favicon_75thAnniversary.svg" />
 
+    <link rel="preload" href="assets/modules/img/flags.png" as="image" />
+    <link rel="preload" href="assets/modules/img/flags@2x.png" as="image" />
+
     <link type="text/css" rel="stylesheet" href="css/main.css" />
     <link type="text/css" rel="stylesheet" href="css/mobile_style.css" />
-    <link type="text/css" rel="stylesheet" href="css/countrySelect.css" />
+
     <link type="text/css" rel="stylesheet" href="css/demo.css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="assets/modules/utils/intlTelInput.css" />
+    <link rel="stylesheet" href="assets/modules/bootstrap/bootstrap-icons.css" />
+    <link type="text/css" rel="stylesheet" href="css/countrySelect.css" />
   </head>
   <body>
     <div id="loading-screen">
@@ -89,7 +93,7 @@
 
           <div class="stitches_options">
             <div class="stitches-block" data-color="#000000" id="stitchesHave">
-              <img class="texture-option" src="assets/textures/wave.png" width="50" height="50" alt="Double Stitches" />
+              <img class="texture-option" src="assets/textures/double_stitch.png" width="50" height="50" alt="Double Stitches" />
               <p class="color-title">Double Stitches</p>
             </div>
             <!-- <div class="stitches-block" data-color="#FFFFFF" id="stitchesHave">
@@ -105,8 +109,8 @@
               <p class="color-title">Quadro Stitches</p>
             </div> -->
             <div class="stitches-block" id="stitchesHave">
-              <img class="texture-option" src="assets/icons/none_icon.png" width="50" height="50" alt="None" style="border: none" />
-              <p class="color-title">None</p>
+              <img class="texture-option" src="assets/textures/top_stitch.png" width="50" height="50" alt="Top Stitches" />
+              <p class="color-title">Top Stitches</p>
             </div>
           </div>
 
@@ -175,10 +179,6 @@
             <div class="texture-option-wrapper" id="textureHave">
               <img class="texture-option" src="assets/icons/none_icon.png" width="50" height="50" alt="None" style="border: none" />
               <p class="color-title">None</p>
-            </div>
-
-            <div class="texture-option-wrapper" >
-              <button id="change">Change It</button>
             </div>
           </div>
 
@@ -529,29 +529,28 @@
         }
       }
     </script>
+
+    <script src="assets/modules/jquery/jquery-3.7.1.min.js"></script>
+    <script src="assets/modules/jquery/jquery-ui.min.js"></script>
+    <script src="assets/modules/jquery/jquery.ui.touch-punch.min.js"></script>
+
     <script type="module" src="js/script.js"></script>
     <script type="module" src="js/controls-ui.js"></script>
     <script type="module" src="js/pdfSignature.js"></script>
-    <script type="module" src="js/fetchAPI.js"></script>
 
     <script type="text/javascript" src="js/email.min.js"></script>
-    <script src="assets/jquery/jquery-3.7.1.min.js"></script>
-    <script src="assets/jquery/jquery-ui.min.js"></script>
-    <script src="assets/jquery/jquery.ui.touch-punch.min.js"></script>
+
     <script src="js/countrySelect.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script src="assets/modules/utils/intlTelInput.min.js"></script>
     <script>
       $("#country").countrySelect({
-        // defaultCountry: "jp",
-        // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-        // responsiveDropdown: true,
         preferredCountries: ["us", "gb", "ca"],
       });
 
       const phoneInputField = document.querySelector("#contact-number");
       const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        utilsScript: "assets/modules/utils/utils.js",
       });
 
       function toggleAccordion(e) {

@@ -237,7 +237,6 @@ function createGUI() {
     const showMesh = scene.getObjectByName(meshToShow);
     if (showMesh) {
       showMesh.visible = true;
-      console.log("asd");
     } else {
       console.warn(`Mesh to show "${meshToShow}" not found`);
     }
