@@ -480,22 +480,56 @@ function createGUI() {
   document.querySelectorAll(".material-block").forEach((option) => {
     option.addEventListener("click", () => {
       const colorName = option.querySelector(".color-title").textContent;
-
       const color = option.getAttribute("data-color");
-      const selectedMaterial = materialsList[0];
 
+      const selectedMaterial = materialsList[0];
       if (selectedMaterial) {
         document.querySelector(".hardwareColor").innerHTML = colorName;
+
+        selectedMaterial.map = null;
+        selectedMaterial.metalnessMap = null;
+        selectedMaterial.roughnessMap = null;
+        selectedMaterial.normalMap = null;
+
         selectedMaterial.color.set(color);
+        selectedMaterial.metalness = 0.5;
+        selectedMaterial.roughness = 0;
+
         selectedMaterial.needsUpdate = true;
-      } else {
-        console.error(`Material does not support color property.`);
       }
     });
   });
 
   document.querySelector(".stainless-steel").addEventListener("click", () => {
-    
+    // Stainless steel texture paths
+    const stainlessTextures = {
+      map: loader.load("./assets/textures/Metal012_2K-JPG_Color.jpg"),
+      metalRoughMap: loader.load("assets/textures/Metal012_2K-JPG_Metalness-Metal012_2K-JPG_Roughness.png"),
+      normalMap: loader.load("./assets/textures/Metal012_2K-JPG_NormalGL.jpg"),
+    };
+
+    const selectedMaterial = materialsList[0];
+
+    if (selectedMaterial) {
+      document.querySelector(".hardwareColor").innerHTML = "Stainless Steel";
+
+      selectedMaterial.map = stainlessTextures.map;
+
+      // Apply the same combined texture to both
+      selectedMaterial.metalnessMap = stainlessTextures.metalRoughMap;
+      selectedMaterial.roughnessMap = stainlessTextures.metalRoughMap;
+
+      selectedMaterial.normalMap = stainlessTextures.normalMap;
+
+      // Optional neutral color
+      selectedMaterial.color.set("#ffffff");
+
+      // These values let the texture maps fully take effect
+      selectedMaterial.metalness = 1;
+      selectedMaterial.roughness = 1;
+
+      selectedMaterial.needsUpdate = true;
+    }
   });
 
   function changeColor(color, colorName) {
