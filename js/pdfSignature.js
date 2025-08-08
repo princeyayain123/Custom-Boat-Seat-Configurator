@@ -105,7 +105,8 @@ const startPDFApp = () => {
       }
 
       const data = await response.json();
-      console.log("Upload success:", data);
+
+      // data === URL
 
       updateStatus("File uploaded successfully!");
       showSuccess();
@@ -355,14 +356,7 @@ const startPDFApp = () => {
       hardware_color: document.querySelector(".hardware-color").textContent,
     };
 
-    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams).then(
-      function (response) {
-        console.log("SUCCESS...", response);
-      },
-      function (error) {
-        console.error("FAILED...", error);
-      }
-    );
+    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams).then();
   }
 
   init();
