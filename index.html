@@ -5,14 +5,128 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="icon" type="image/svg+xml" href="assets/icons/Pompanette_Favicon_75thAnniversary.svg" />
+    <!-- prettier ignore -->
+    <style>
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #1e1e2f;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        z-index: 9999;
+        transition: 0.3s ease;
+      }
+      #loading-bar {
+        position: relative;
+        width: 80%;
+        height: 20px;
+        background: #3e3e5e;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 20px;
+        transition: 0.3s ease;
+      }
+      #loading-progress {
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        border-radius: 10px;
+        transition: 0.3s ease;
+      }
+      #loading-text {
+        margin-top: 10px;
+        font-size: 16px;
+        transition: 0.3s ease;
+      }
+      #info {
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        text-align: center;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
+        z-index: 1;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        loadCSSFiles().catch((err) => console.error(err));
+        loadScripts().catch((err) => console.error(err));
+      });
 
-    <link type="text/css" rel="stylesheet" href="css/main.css" />
-    <link type="text/css" rel="stylesheet" href="css/mobile_style.css" />
-    <link type="text/css" rel="stylesheet" href="css/demo.css" />
-    <link type="text/css" rel="stylesheet" href="css/countrySelect.css" />
+      async function loadCSSFiles() {
+        const cssFiles = ["css/main.css", "css/mobile_style.css", "css/demo.css", "css/countrySelect.css", "assets/modules/utils/intlTelInput.css", "assets/modules/bootstrap/bootstrap-icons.css"];
 
-    <link type="text/css" rel="stylesheet" href="assets/modules/utils/intlTelInput.css" />
-    <link rel="stylesheet" href="assets/modules/bootstrap/bootstrap-icons.css" />
+        for (const href of cssFiles) {
+          await new Promise((resolve, reject) => {
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = href;
+
+            link.onload = () => resolve();
+            link.onerror = () => reject(new Error(`Failed to load: ${href}`));
+
+            document.head.appendChild(link);
+          });
+        }
+      }
+
+      async function loadScripts() {
+        const scripts = [
+          { src: "js/email.min.js" },
+          { src: "js/countrySelect.js" }, // <-- this must be loaded before using .countrySelect()
+          { src: "assets/modules/utils/intlTelInput.min.js" },
+          { src: "js/script.js", type: "module" },
+          { src: "js/controls-ui.js", type: "module" },
+          { src: "js/pdfSignature.js", type: "module" },
+        ];
+
+        for (const { src, type } of scripts) {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = src;
+            if (type) script.type = type;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load: ${src}`));
+            document.body.appendChild(script);
+          });
+
+          // Run countrySelect only after it's loaded
+          if (src === "js/countrySelect.js") {
+            if (typeof $ !== "undefined" && typeof $.fn.countrySelect === "function") {
+              $("#country").countrySelect({
+                preferredCountries: ["us", "gb", "ca"],
+              });
+            } else {
+              console.error("countrySelect plugin failed to load.");
+            }
+          }
+
+          // Initialize intlTelInput after it’s loaded
+          if (src === "assets/modules/utils/intlTelInput.min.js") {
+            const phoneInputField = document.querySelector("#contact-number");
+            if (phoneInputField) {
+              window.intlTelInput(phoneInputField, {
+                utilsScript: "assets/modules/utils/utils.js",
+              });
+            }
+          }
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="loading-screen">
@@ -223,6 +337,10 @@
               <div class="color-option" style="background-color: #000000"></div>
               <p class="color-title">Black</p>
             </div>
+            <div class="stainless-steel">
+              <div class="color-option" style="background-color: #000000"></div>
+              <p class="color-title">Stainless Steel</p>
+            </div>
           </div>
         </div>
       </div>
@@ -230,11 +348,11 @@
 
     <div class="selectedMaterials">
       <div class="circle1 tooltip">
-        <img src="assets/icons/Primary Color.png" alt="Primary Color" />
+        <img src="assets/icons/Secondary Color.png" alt="Primary Color" />
         <span class="tooltiptext">Primary Material</span>
       </div>
       <div class="circle2 tooltip">
-        <img src="assets/icons/Secondary Color.png" alt="Secondary Color" />
+        <img src="assets/icons/Primary Color.png" alt="Secondary Color" />
         <span class="tooltiptext">Secondary Material</span>
       </div>
       <div class="circle3 tooltip">
@@ -249,10 +367,6 @@
         <img src="assets/icons/Arm Rest.png" alt="Headrest Color" />
         <span class="tooltiptext">Head Rest Material</span>
       </div>
-      <!-- <div class="circle6 tooltip">
-        <img src="assets/icons/Stitching Color.png" alt="Stitch Color" />
-        <span class="tooltiptext">Stitching Material</span>
-      </div> -->
     </div>
 
     <div class="configurationMaterial d-none">
@@ -373,11 +487,6 @@
                         </div>
                       </div>
 
-                      <!-- <div class="form-group">
-                        <input type="text" id="country" name="country" placeholder=" " required />
-                        <label for="country">Country*</label>
-                      </div> -->
-
                       <div class="form-group">
                         <input type="text" id="postal-zip" name="postal-zip" placeholder=" " required />
                         <label for="postal-zip">Postal Zip*</label>
@@ -405,7 +514,7 @@
                 </div>
                 <div class="col-lg-5" id="orderDetails">
                   <div class="accordion-container">
-                    <div class="accordion-header" onclick="toggleAccordion()">
+                    <div class="accordion-header">
                       <div id="picture" class="picture" alt="Seat image"></div>
                       <div class="qty">Qty: <button>-</button> 1 <button>+</button></div>
                     </div>
@@ -462,8 +571,8 @@
                   <div>
                     <canvas id="signature-pad" width="400" height="200"></canvas>
                   </div>
-                  <div>
-                    <button type="button" class="button-24" id="clear-signature" style="width: 100%">Clear Signature</button>
+                  <div class="top-content">
+                    <button type="button" class="button-24" id="clear-signature" style="width: 100%; max-width: 200px">Clear Signature</button>
                   </div>
                 </div>
               </div>
@@ -529,33 +638,5 @@
     <script src="assets/modules/jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/modules/jquery/jquery-ui.min.js"></script>
     <script src="assets/modules/jquery/jquery.ui.touch-punch.min.js"></script>
-
-    <script type="module" src="js/script.js"></script>
-    <script type="module" src="js/controls-ui.js"></script>
-    <script type="module" src="js/pdfSignature.js"></script>
-
-    <script type="text/javascript" src="js/email.min.js"></script>
-
-    <script src="js/countrySelect.js"></script>
-
-    <script src="assets/modules/utils/intlTelInput.min.js"></script>
-    <script>
-      $("#country").countrySelect({
-        preferredCountries: ["us", "gb", "ca"],
-      });
-
-      const phoneInputField = document.querySelector("#contact-number");
-      const phoneInput = window.intlTelInput(phoneInputField, {
-        utilsScript: "assets/modules/utils/utils.js",
-      });
-
-      function toggleAccordion(e) {
-        const body = document.getElementById("accordionBody");
-        body.classList.toggle("open");
-
-        // Prevent parent onclick if button was clicked
-        if (e && e.stopPropagation) e.stopPropagation();
-      }
-    </script>
   </body>
 </html>

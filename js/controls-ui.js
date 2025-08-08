@@ -76,6 +76,13 @@ const UIController = {
         this.backStep();
       });
     });
+    document.querySelector(".accordion-header").addEventListener("click", function (e) {
+      const body = document.getElementById("accordionBody");
+      body.classList.toggle("open");
+
+      // Prevent parent onclick if button was clicked
+      if (e && e.stopPropagation) e.stopPropagation();
+    });
   },
 
   toggleSection(btn) {
@@ -195,4 +202,3 @@ const UIController = {
 
 // Initialize the object
 UIController.init();
-

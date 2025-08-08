@@ -1039,6 +1039,10 @@ button {
   background-color: #ddd;
 }
 
+.stainless-steel:hover {
+  background-color: #ddd;
+}
+
 .col-lg-6 {
   position: relative;
   width: 100%;
@@ -1058,7 +1062,6 @@ button {
 .top-content {
   display: flex;
   flex-direction: column;
-
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -1423,6 +1426,23 @@ button#generate-pdf {
   font-size: 14px;
   padding: 0;
   margin-top: 10px;
+}
+
+.stainless-steel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  caret-color: transparent;
+  cursor: pointer;
+  transition: 0.3s ease;
+  padding: 10px 0;
+  transition: 0.3s ease;
+  border-radius: 10px;
+}
+
+.stainless-steel .color-option {
+  background: linear-gradient(135deg, #d7d7d7 0%, #f0f0f0 25%, #bcbcbc 50%, #f0f0f0 75%, #d7d7d7 100%);
+  background-size: 200% 200%;
 }
 
 @keyframes outline {

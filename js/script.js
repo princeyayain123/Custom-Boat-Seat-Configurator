@@ -180,7 +180,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/try.glb", (gltf) => {
+  loader.load("./assets/model/trys.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -312,7 +312,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_bnormalmap.jpg",
       repeatX: 2,
       repeatY: 2,
-      alpha: 0.92,
+      alpha: 0.91,
     },
     {
       name: "quilting_c",
@@ -323,7 +323,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_cnormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.8,
+      alpha: 0.76,
     },
     {
       name: "quilting_d",
@@ -353,7 +353,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_fnormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.8,
+      alpha: 0.76,
     },
     {
       name: "quilting a s 002",
@@ -492,6 +492,10 @@ function createGUI() {
         console.error(`Material does not support color property.`);
       }
     });
+  });
+
+  document.querySelector(".stainless-steel").addEventListener("click", () => {
+    
   });
 
   function changeColor(color, colorName) {
