@@ -7,7 +7,6 @@ const UPLOAD_URL = "https://pompanetteserver.onrender.com/upload";
 const EMAIL_SERVICE_ID = "service_nwdixv2";
 const EMAIL_TEMPLATE_ID = "template_rgt0cup";
 const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
-const UPLOAD_TOKEN = "pompanette123";
 
 const startPDFApp = () => {
   function init() {
@@ -25,6 +24,14 @@ const startPDFApp = () => {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async function startSession() {
+    const res = await fetch("https://pompanetteserver.onrender.com/start-upload-session", {
+      method: "POST",
+      credentials: "include", // important so the session cookie is saved
+    });
+    if (!res.ok) throw new Error("Failed to start upload session");
   }
 
   async function uploadPDFToBackend(file) {
@@ -94,10 +101,8 @@ const startPDFApp = () => {
 
       const response = await fetch(UPLOAD_URL, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${UPLOAD_TOKEN}`,
-        },
         body: backendFormData,
+        credentials: "include", // <-- important for cookie auth
       });
 
       if (!response.ok) {
@@ -105,6 +110,7 @@ const startPDFApp = () => {
       }
 
       const data = await response.json();
+      console.log("Uploaded file URL:", data.url);
 
       // data === URL
 
@@ -321,6 +327,8 @@ const startPDFApp = () => {
 
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
+
+      await startSession();
       await uploadPDFToBackend(file);
     });
   }
