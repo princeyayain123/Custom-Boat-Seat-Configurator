@@ -29,7 +29,7 @@ const startPDFApp = () => {
   async function startSession() {
     const res = await fetch("https://pompanetteserver.onrender.com/start-upload-session", {
       method: "POST",
-      credentials: "include", // important so the session cookie is saved
+      credentials: "include",
     });
     if (!res.ok) throw new Error("Failed to start upload session");
   }
@@ -102,7 +102,7 @@ const startPDFApp = () => {
       const response = await fetch(UPLOAD_URL, {
         method: "POST",
         body: backendFormData,
-        credentials: "include", // <-- important for cookie auth
+        credentials: "include",
       });
 
       if (!response.ok) {
