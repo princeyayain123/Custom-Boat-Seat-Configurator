@@ -7,8 +7,17 @@ const EMAIL_TEMPLATE_ID = "template_rgt0cup";
 const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
 
 const startPDFApp = () => {
-  function init() {
+  async function init() {
     emailjs.init(EMAIL_PUBLIC_KEY);
+
+    // Make sure upload session is started and cookie is set
+    try {
+      await startSession();
+      console.log("Upload session started");
+    } catch (err) {
+      console.error("Failed to start upload session", err);
+      return;
+    }
     addEvent();
     drawing();
     generatePDF();
@@ -19,7 +28,7 @@ const startPDFApp = () => {
   async function fetchAPI() {
     try {
       await fetch("https://pompanetteserver.onrender.com/ping");
-      console.log("SUCCCEESESESESESES")
+      console.log("SUCCCEESESESESESES");
     } catch (error) {
       console.error(error);
     }
@@ -327,7 +336,6 @@ const startPDFApp = () => {
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
 
-      await startSession();
       await uploadPDFToBackend(file);
     });
   }
