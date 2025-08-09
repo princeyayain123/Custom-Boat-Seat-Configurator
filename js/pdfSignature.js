@@ -14,17 +14,11 @@ const startPDFApp = () => {
     generatePDF();
     checkInputs();
     fetchAPI();
-    try {
-      await startSession();
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   async function fetchAPI() {
     try {
       await fetch("https://pompanetteserver.onrender.com/ping");
-      console.log("SUCCCEESESESESESES");
     } catch (error) {
       console.error(error);
     }
