@@ -7,19 +7,24 @@ const EMAIL_TEMPLATE_ID = "template_rgt0cup";
 const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
 
 const startPDFApp = () => {
-  function init() {
+  async function init() {
     emailjs.init(EMAIL_PUBLIC_KEY);
     addEvent();
     drawing();
     generatePDF();
     checkInputs();
     fetchAPI();
+    try {
+      await startSession();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function fetchAPI() {
     try {
       await fetch("https://pompanetteserver.onrender.com/ping");
-      console.log("SUCCCEESESESESESES")
+      console.log("SUCCCEESESESESESES");
     } catch (error) {
       console.error(error);
     }
