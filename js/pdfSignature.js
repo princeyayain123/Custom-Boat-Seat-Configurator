@@ -2,8 +2,6 @@ import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm";
 const canvas = document.getElementById("signature-pad");
 const ctx = canvas.getContext("2d");
 
-const UPLOAD_URL = "https://pompanetteserver.onrender.com/upload";
-
 const EMAIL_SERVICE_ID = "service_nwdixv2";
 const EMAIL_TEMPLATE_ID = "template_rgt0cup";
 const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
@@ -11,6 +9,7 @@ const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
 const startPDFApp = () => {
   function init() {
     emailjs.init(EMAIL_PUBLIC_KEY);
+    startSession();
     addEvent();
     drawing();
     generatePDF();
@@ -99,7 +98,7 @@ const startPDFApp = () => {
       const backendFormData = new FormData();
       backendFormData.append("file", file);
 
-      const response = await fetch(UPLOAD_URL, {
+      const response = await fetch("https://pompanetteserver.onrender.com/upload", {
         method: "POST",
         body: backendFormData,
         credentials: "include",
@@ -328,7 +327,6 @@ const startPDFApp = () => {
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
 
-      await startSession();
       await uploadPDFToBackend(file);
     });
   }
