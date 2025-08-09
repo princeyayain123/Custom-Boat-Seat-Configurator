@@ -9,7 +9,6 @@ const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
 const startPDFApp = () => {
   function init() {
     emailjs.init(EMAIL_PUBLIC_KEY);
-    startSession();
     addEvent();
     drawing();
     generatePDF();
@@ -327,6 +326,7 @@ const startPDFApp = () => {
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
 
+      await startSession();
       await uploadPDFToBackend(file);
     });
   }
