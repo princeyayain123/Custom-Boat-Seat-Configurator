@@ -19,6 +19,7 @@ const startPDFApp = () => {
   async function fetchAPI() {
     try {
       await fetch("https://pompanetteserver.onrender.com/ping");
+      console.log("SUCCCEESESESESESES")
     } catch (error) {
       console.error(error);
     }
