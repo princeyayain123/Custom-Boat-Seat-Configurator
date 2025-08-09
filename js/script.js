@@ -237,8 +237,6 @@ function createGUI() {
     const showMesh = scene.getObjectByName(meshToShow);
     if (showMesh) {
       showMesh.visible = true;
-    } else {
-      console.warn(`Mesh to show "${meshToShow}" not found`);
     }
 
     meshesToHide.forEach((name) => {
@@ -423,21 +421,6 @@ function createGUI() {
           console.warn("Invalid index.");
           return;
       }
-
-      const selectedMaterial = materialsList.find((mat) => mat.name === stitchesName);
-      if (selectedMaterial) {
-        currentMaterial = selectedMaterial;
-
-        const circles = document.querySelectorAll(".selectedMaterials > div");
-        circles.forEach((c, index) => {
-          c.classList.remove("active");
-          if (index === 1) {
-            c.classList.add("active");
-          }
-        });
-      } else {
-        console.warn(`Material not found for textureName: ${stitchesName}`);
-      }
     });
   });
 
@@ -468,7 +451,7 @@ function createGUI() {
       const selectedMaterial = materialsList.find((mat) => mat.name === quiltedStitcheName);
 
       if (selectedMaterial) {
-        document.querySelector(".hardwareColor").innerHTML = colorName;
+        document.querySelector(".quiltingColorMaterial").innerHTML = colorName;
         selectedMaterial.color.set(color);
         selectedMaterial.needsUpdate = true;
       } else {

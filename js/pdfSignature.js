@@ -222,6 +222,7 @@ const startPDFApp = () => {
       const postalZip = document.getElementById("postal-zip").value.trim();
       const contact = document.getElementById("contact-number").value.trim();
       const email = document.getElementById("email-address").value.trim();
+      const notes = document.getElementById("notes").value.trim();
 
       event.preventDefault();
 
@@ -298,21 +299,22 @@ const startPDFApp = () => {
       page.drawText(`Postal/Zip: ${postalZip}`, { x: 50, y: 620, size: 12 });
       page.drawText(`Contact Number: ${contact}`, { x: 50, y: 600, size: 12 });
       page.drawText(`Email Address: ${email}`, { x: 50, y: 580, size: 12 });
+      page.drawText(`Notes: ${notes}`, { x: 50, y: 560, size: 12 });
 
-      page.drawText(`Main Color: ${mainColor}`, { x: 50, y: 540, size: 12 });
-      page.drawText(`Secondary Color: ${secondaryColor}`, { x: 50, y: 520, size: 12 });
-      page.drawText(`Arm Rest Color: ${armColor}`, { x: 50, y: 500, size: 12 });
-      page.drawText(`Piping Color: ${pipingColor}`, { x: 50, y: 480, size: 12 });
-      page.drawText(`Head Rest Color: ${headColor}`, { x: 50, y: 460, size: 12 });
-      page.drawText(`Stitch Color: ${stitchColor}`, { x: 50, y: 440, size: 12 });
-      page.drawText(`Quilting Stitches Style: ${quiltStyle}`, { x: 50, y: 420, size: 12 });
-      page.drawText(`Quilting Stitches Color: ${quiltColor}`, { x: 50, y: 400, size: 12 });
-      page.drawText(`Hardware Color: ${hardwareColor}`, { x: 50, y: 380, size: 12 });
-
-      page.drawText(`Date: ${date}`, { x: 50, y: 360, size: 12 });
+      page.drawText(`Main Color: ${mainColor}`, { x: 50, y: 520, size: 12 });
+      page.drawText(`Secondary Color: ${secondaryColor}`, { x: 50, y: 500, size: 12 });
+      page.drawText(`Arm Rest Color: ${armColor}`, { x: 50, y: 480, size: 12 });
+      page.drawText(`Piping Color: ${pipingColor}`, { x: 50, y: 460, size: 12 });
+      page.drawText(`Head Rest Color: ${headColor}`, { x: 50, y: 440, size: 12 });
+      page.drawText(`Stitch Style: ${headColor}`, { x: 50, y: 420, size: 12 });
+      page.drawText(`Stitch Color: ${stitchColor}`, { x: 50, y: 400, size: 12 });
+      page.drawText(`Quilting Stitches Style: ${quiltStyle}`, { x: 50, y: 380, size: 12 });
+      page.drawText(`Quilting Stitches Color: ${quiltColor}`, { x: 50, y: 360, size: 12 });
+      page.drawText(`Hardware Color: ${hardwareColor}`, { x: 50, y: 340, size: 12 });
+      page.drawText(`Date: ${date}`, { x: 50, y: 320, size: 12 });
 
       const signatureImage = await pdfDoc.embedPng(signatureData);
-      page.drawImage(signatureImage, { x: 50, y: 230, width: 150, height: 75 });
+      page.drawImage(signatureImage, { x: 50, y: 190, width: 150, height: 75 });
 
       const pdfBytes = await pdfDoc.save();
       const blob = new Blob([pdfBytes], { type: "application/pdf" });
@@ -345,11 +347,14 @@ const startPDFApp = () => {
       postal_zip: document.getElementById("postal-zip").value,
       phone_number: document.getElementById("contact-number").value,
       email_address: document.getElementById("email-address").value,
+      notes: document.getElementById("notes").value,
+
       main_color: document.querySelector(".main-color").textContent,
       secondary_color: document.querySelector(".secondary-color").textContent,
       arm_rest_color: document.querySelector(".arm-color").textContent,
       piping_color: document.querySelector(".piping-color").textContent,
       head_rest_color: document.querySelector(".head-color").textContent,
+      stitch_style: document.querySelector(".stitch-style").textContent,
       stitch_color: document.querySelector(".stitch-color").textContent,
       quilting_style: document.querySelector(".quilt-style").textContent,
       quilting_color: document.querySelector(".quilt-color").textContent,

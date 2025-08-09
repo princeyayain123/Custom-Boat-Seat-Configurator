@@ -69,7 +69,6 @@ const UIController = {
     this.elements.agreeButton.addEventListener("click", () => this.showAgreement());
     this.elements.blackOutX.addEventListener("click", () => this.hideAgreement());
     this.elements.button.addEventListener("click", () => this.toggleSidebar());
-    this.elements.clearSignature.addEventListener("click", () => console.log("Signature cleared"));
     this.elements.nextButtons.forEach((button) => button.addEventListener("click", () => this.nextStep()));
     this.elements.prevButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -126,6 +125,7 @@ const UIController = {
       [".Arm_Side\\.002", ".arm-color"],
       [".Accent_Color\\.002", ".piping-color"],
       [".Headrest\\.002", ".head-color"],
+      [".stitchesStyleMaterial", ".stitch-style"],
       [".stitches\\.002", ".stitch-color"],
       [".quiltingStyleMaterial", ".quilt-style"],
       [".quiltingColorMaterial", ".quilt-color"],
