@@ -1231,11 +1231,13 @@
   background-repeat: no-repeat;
   background-color: #dbdbdb;
   background-position: 20px 0;
-  
+    background-size: 5630px 15px;
 }
+
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .iti__flag {
-    background-image: url("../img/flags@2x.png");
+    background-image: url("../img/flags.png");
+    background-size: 5630px 15px;
   }
 }
 
