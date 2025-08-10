@@ -180,7 +180,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/trys.glb", (gltf) => {
+  loader.load("./assets/model/TEST3.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -188,6 +188,7 @@ function loadModel() {
 
     model.traverse((object) => {
       if (object.isMesh) {
+        console.log(object.name); // <-- shows mesh name in console
         object.castShadow = true;
         object.receiveShadow = true;
         if (!materialsList.includes(object.material)) {
@@ -245,7 +246,18 @@ function createGUI() {
     });
   }
 
-  toggleMeshes("quilting_a", ["quilting_b", "quilting_c", "quilting_d", "quilting_e", "quilting_f"]);
+  function toggleVisibilty(model, none, have, img) {
+    const mesh = scene.getObjectByName(model);
+
+    if (mesh) {
+      mesh.visible = !mesh.visible;
+
+      // Change image src based on visibility
+      img.src = mesh.visible ? none : have;
+    }
+  }
+
+
 
   function changeQuiltingTextures({ meshName = "quilting_a", baseColorPath, metallicRoughnessPath, normalMapPath, repeatX = 4, repeatY = 4, alpha = 1 }) {
     const quiltingMesh = scene.getObjectByName(meshName);
@@ -403,25 +415,30 @@ function createGUI() {
       document.querySelector(".stitchesStyleMaterial").innerHTML = imgElement.alt;
       switch (index) {
         case 0:
-          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010", "Stitch_Double_Backrest_Front_012"]);
+          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005"]);
           break;
-        // case 1:
-        //   toggleMeshes("Stitch_Single_Backrest_Back005", ["Stitch_Single_Armrest001", "Stitch_Double_Backrest_Front_010", "Stitch_Double_Backrest_Front_012"]);
-        //   break;
-        // case 2:
-        //   toggleMeshes("Stitch_Double_Backrest_Front_010", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_012"]);
-        //   break;
-        // case 3:
-        //   toggleMeshes("Stitch_Double_Backrest_Front_012", ["Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010"]);
-        //   break;
         case 1:
-          toggleMeshes("", ["Stitch_Double_Backrest_Front_012", "Stitch_Single_Armrest001", "Stitch_Single_Backrest_Back005", "Stitch_Double_Backrest_Front_010"]);
+          toggleMeshes("", ["Stitch_Double_Backrest_Front_012", "Stitch_Single_Armrest001"]);
           break;
         default:
           console.warn("Invalid index.");
           return;
       }
     });
+  });
+
+  const perimeterBlock = document.getElementById("perimeterHave");
+  const perimeterImg = perimeterBlock.querySelector("img"); // Get the <img> inside
+
+  perimeterBlock.addEventListener("click", () => {
+    toggleVisibilty("main_004001", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+  });
+
+  const insertBlock = document.getElementById("insertHave");
+  const insertImg = insertBlock.querySelector("img");
+
+  insertBlock.addEventListener("click", () => {
+    toggleVisibilty("accent_000", "assets/textures/innerhave.png", "assets/textures/innernone.png", insertImg);
   });
 
   const quiltedStitcheName = "quilting_a_stitches.001";
@@ -486,9 +503,9 @@ function createGUI() {
   document.querySelector(".stainless-steel").addEventListener("click", () => {
     // Stainless steel texture paths
     const stainlessTextures = {
-      map: loader.load("./assets/textures/Metal012_2K-JPG_Color.jpg"),
-      metalRoughMap: loader.load("assets/textures/Metal012_2K-JPG_Metalness-Metal012_2K-JPG_Roughness.png"),
-      normalMap: loader.load("./assets/textures/Metal012_2K-JPG_NormalGL.jpg"),
+      map: loader.load("./assets/quilting/Metal012_2K-JPG_Color.jpg"),
+      metalRoughMap: loader.load("assets/quilting/Metal012_2K-JPG_Metalness-Metal012_2K-JPG_Roughness.png"),
+      normalMap: loader.load("./assets/quilting/Metal012_2K-JPG_NormalGL.jpg"),
     };
 
     const selectedMaterial = materialsList[0];

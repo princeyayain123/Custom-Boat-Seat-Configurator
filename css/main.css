@@ -279,11 +279,19 @@ canvas {
   height: 30px;
   margin-bottom: 5px;
 }
-.slider-containers {
+
+.slider-containers, .modelChairInfo {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.modelChairInfo {
+  flex-direction: column;
+  justify-content: end !important;
+  align-items: end;
+  gap: 10px;
 }
 
 .slick-dots {
@@ -902,10 +910,11 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 button {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding: 5px 10px;
   background-color: white;
   color: black;
   border: none;
@@ -1019,7 +1028,8 @@ button {
 }
 
 .material-block,
-.stitches-block {
+.stitches-block,
+.perimeter-block {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1040,6 +1050,10 @@ button {
 }
 
 .stainless-steel:hover {
+  background-color: #ddd;
+}
+
+.perimeter-block:hover {
   background-color: #ddd;
 }
 
