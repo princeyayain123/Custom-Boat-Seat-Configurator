@@ -29,6 +29,7 @@ const startPDFApp = () => {
       method: "POST",
       credentials: "include",
     });
+    alert("startSession status:", res.status);
     if (!res.ok) throw new Error("Failed to start upload session");
   }
 
