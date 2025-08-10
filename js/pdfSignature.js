@@ -139,7 +139,7 @@ const startPDFApp = () => {
     }
   }
 
-  async function sendData() {
+  async function sendData(file) {
     await startSession();
     await uploadPDFToBackend(file);
   }
@@ -347,7 +347,7 @@ const startPDFApp = () => {
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
 
-      await sendData();
+      await sendData(file);
     });
   }
 
