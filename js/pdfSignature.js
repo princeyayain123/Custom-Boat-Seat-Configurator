@@ -117,6 +117,7 @@ const startPDFApp = () => {
       sendEmail();
       emptyInput();
     } catch (error) {
+      alert(error);
       console.error("Upload failed:", error);
       updateStatus("Error uploading file.");
       showError();
