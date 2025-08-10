@@ -14,7 +14,6 @@ const startPDFApp = () => {
     generatePDF();
     checkInputs();
     fetchAPI();
-    await sendData();
   }
 
   async function fetchAPI() {
@@ -142,7 +141,7 @@ const startPDFApp = () => {
 
   async function sendData() {
     await startSession();
-    // await uploadPDFToBackend(file);
+    await uploadPDFToBackend(file);
   }
 
   function addEvent() {
@@ -347,6 +346,8 @@ const startPDFApp = () => {
 
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
+
+      await sendData();
     });
   }
 
