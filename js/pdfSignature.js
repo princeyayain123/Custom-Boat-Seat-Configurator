@@ -27,13 +27,26 @@ const startPDFApp = () => {
   async function startSession() {
     const res = await fetch("https://pompanetteserver.onrender.com/start-upload-session", {
       method: "POST",
-      credentials: "include",
+      // No need for credentials here since JWT is returned in body
     });
-    alert("startSession status:", res.status);
+
     if (!res.ok) throw new Error("Failed to start upload session");
+
+    const data = await res.json();
+    const token = data.token; // backend should return { token: "JWT_TOKEN_HERE" }
+    if (!token) throw new Error("No token received");
+
+    // Save token locally to use for upload requests
+    localStorage.setItem("uploadToken", token);
   }
 
   async function uploadPDFToBackend(file) {
+    const token = localStorage.getItem("uploadToken");
+    if (!token) {
+      alert("No upload token found. Please start session first.");
+      return;
+    }
+
     const statusContainer = document.getElementById("loading");
     const statusText = statusContainer.querySelector(".status");
     const loadingStatus = document.getElementById("loading-status");
@@ -101,7 +114,10 @@ const startPDFApp = () => {
       const response = await fetch("https://pompanetteserver.onrender.com/upload", {
         method: "POST",
         body: backendFormData,
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        // Don't need credentials when using JWT in header
       });
 
       if (!response.ok) {
@@ -110,8 +126,6 @@ const startPDFApp = () => {
 
       const data = await response.json();
       console.log("Uploaded file URL:", data.url);
-
-      // data === URL
 
       updateStatus("File uploaded successfully!");
       showSuccess();
@@ -123,6 +137,11 @@ const startPDFApp = () => {
       updateStatus("Error uploading file.");
       showError();
     }
+  }
+
+  async function sendData() {
+    await startSession();
+    await uploadPDFToBackend(file);
   }
 
   function addEvent() {
@@ -328,8 +347,7 @@ const startPDFApp = () => {
       const file = new File([blob], "Pompanette_Boat_Seat_Configuration_Agreement.pdf", { type: "application/pdf" });
       loadingAnimation();
 
-      await startSession();
-      await uploadPDFToBackend(file);
+      await sendData();
     });
   }
 
