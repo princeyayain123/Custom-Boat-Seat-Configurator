@@ -180,7 +180,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/TEST3.glb", (gltf) => {
+  loader.load("./assets/model/TEST4.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -188,7 +188,6 @@ function loadModel() {
 
     model.traverse((object) => {
       if (object.isMesh) {
-        console.log(object.name); // <-- shows mesh name in console
         object.castShadow = true;
         object.receiveShadow = true;
         if (!materialsList.includes(object.material)) {
@@ -248,16 +247,20 @@ function createGUI() {
 
   function toggleVisibilty(model, none, have, img) {
     const mesh = scene.getObjectByName(model);
+    const stitchArmrest = scene.getObjectByName("Stitch_Single_Armrest001");
 
     if (mesh) {
       mesh.visible = !mesh.visible;
 
       // Change image src based on visibility
       img.src = mesh.visible ? none : have;
+
+      // If mesh is visible, hide Stitch_Single_Armrest001
+      if (mesh.visible && stitchArmrest) {
+        stitchArmrest.visible = false;
+      }
     }
   }
-
-
 
   function changeQuiltingTextures({ meshName = "quilting_a", baseColorPath, metallicRoughnessPath, normalMapPath, repeatX = 4, repeatY = 4, alpha = 1 }) {
     const quiltingMesh = scene.getObjectByName(meshName);
@@ -415,7 +418,7 @@ function createGUI() {
       document.querySelector(".stitchesStyleMaterial").innerHTML = imgElement.alt;
       switch (index) {
         case 0:
-          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005"]);
+          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005", "main_003003"]);
           break;
         case 1:
           toggleMeshes("", ["Stitch_Double_Backrest_Front_012", "Stitch_Single_Armrest001"]);
@@ -430,15 +433,17 @@ function createGUI() {
   const perimeterBlock = document.getElementById("perimeterHave");
   const perimeterImg = perimeterBlock.querySelector("img"); // Get the <img> inside
 
+  toggleVisibilty("main_003003", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+
   perimeterBlock.addEventListener("click", () => {
-    toggleVisibilty("main_004001", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+    toggleVisibilty("main_003003", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
   });
 
   const insertBlock = document.getElementById("insertHave");
   const insertImg = insertBlock.querySelector("img");
 
   insertBlock.addEventListener("click", () => {
-    toggleVisibilty("accent_000", "assets/textures/innerhave.png", "assets/textures/innernone.png", insertImg);
+    toggleVisibilty("accent_001", "assets/textures/innerhave.png", "assets/textures/innernone.png", insertImg);
   });
 
   const quiltedStitcheName = "quilting_a_stitches.001";
