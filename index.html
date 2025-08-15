@@ -59,6 +59,63 @@
         pointer-events: none;
         z-index: 1;
       }
+
+      /* Trigger button */
+      .custom-color-trigger {
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
+        border: 2px solid #aaa;
+        cursor: pointer;
+      }
+
+      /* Overlay */
+      .picker-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.3);
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* Picker modal */
+      .picker-modal {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      /* Realistic color input style */
+      .picker-modal input[type="color"] {
+        -webkit-appearance: none;
+        border: none;
+        width: 120px;
+        height: 60px;
+        cursor: pointer;
+        padding: 0;
+        background: none;
+      }
+
+      /* Chrome/Safari color swatch */
+      .picker-modal input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      .picker-modal input[type="color"]::-webkit-color-swatch {
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      /* Firefox */
+      .picker-modal input[type="color"]::-moz-color-swatch {
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
     </style>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -151,7 +208,7 @@
             </button>
             <button id="texture">
               <img src="assets/icons/texture_icon.jpg" alt="Texture" />
-              <p>Thread</p>
+              <p>Options</p>
             </button>
             <button id="Materials">
               <img src="assets/icons/materials.jpg" alt="Texture" />
@@ -164,7 +221,7 @@
           <div class="coloring_title">
             <p class="coloring_color-title">COLORS</p>
           </div>
-          <div class="coloring_options">
+          <div class="coloring_options" style="position: relative">
             <div class="color-option-wrapper" data-color="#F5F5F5">
               <div class="color-option" style="background-color: #f5f5f5"></div>
               <p class="color-title">Voyager Mystic White</p>
@@ -192,6 +249,13 @@
             <div class="color-option-wrapper" data-color="#253551">
               <div class="color-option" style="background-color: #253551"></div>
               <p class="color-title">Regimental Blue</p>
+            </div>
+            <div class="custom-color-trigger" id="colorPreview"></div>
+
+            <div class="picker-overlay" id="pickerOverlay">
+              <div class="picker-modal">
+                <input type="color" id="colorPicker" value="#ff0000" />
+              </div>
             </div>
           </div>
         </div>
@@ -355,10 +419,10 @@
         <img src="assets/icons/Armrest.png" alt="Arm Rest Color" />
         <span class="tooltiptext">Arm Rest Material</span>
       </div>
-      <div class="circle4 tooltip">
+      <!-- <div class="circle4 tooltip">
         <img src="assets/icons/Piping Color.png" alt="Piping Color" />
         <span class="tooltiptext">Piping Material</span>
-      </div>
+      </div> -->
       <div class="circle5 tooltip">
         <img src="assets/icons/Arm Rest.png" alt="Headrest Color" />
         <span class="tooltiptext">Head Rest Material</span>
@@ -641,6 +705,29 @@
           "three/addons/": "./jsm/"
         }
       }
+    </script>
+    <script>
+      const preview = document.getElementById("colorPreview");
+      const overlay = document.getElementById("pickerOverlay");
+      const picker = document.getElementById("colorPicker");
+
+      // Open picker overlay when swatch clicked
+      preview.addEventListener("click", () => {
+        overlay.style.display = "flex";
+      });
+
+      // Close overlay when clicking outside picker
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.style.display = "none";
+      });
+
+      // Update preview color
+      picker.addEventListener("input", () => {
+        preview.style.backgroundColor = picker.value;
+      });
+
+      // Initial color
+      preview.style.backgroundColor = picker.value;
     </script>
 
     <script src="assets/modules/jquery/jquery-3.7.1.min.js"></script>

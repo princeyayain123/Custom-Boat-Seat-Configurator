@@ -15,7 +15,8 @@ let transitionDuration = 1000;
 let targetPosition = new THREE.Vector3();
 let textureName = "quilting_a.001";
 let materialName = "Main_Color.002";
-let stitchesName = "stitches";
+let currentMaterial = "Main_Color.002";
+let currentPrimaryThread = "stitches";
 let lastTouchDistance = null;
 const fadeMaterials = new Map();
 const container = document.getElementById("container");
@@ -188,6 +189,7 @@ function loadModel() {
 
     model.traverse((object) => {
       if (object.isMesh) {
+        console.log(object.name);
         object.castShadow = true;
         object.receiveShadow = true;
         if (!materialsList.includes(object.material)) {
@@ -231,8 +233,6 @@ function onPointerUp() {
 }
 
 function createGUI() {
-  let currentMaterial = "Main_Color.002";
-
   function toggleMeshes(meshToShow, meshesToHide = []) {
     const showMesh = scene.getObjectByName(meshToShow);
     if (showMesh) {
@@ -257,6 +257,7 @@ function createGUI() {
 
       // If mesh is visible, hide Stitch_Single_Armrest001
       if (mesh.visible && stitchArmrest) {
+        currentPrimaryThread = "Accent_Color.002";
         stitchArmrest.visible = false;
       }
     }
@@ -414,6 +415,7 @@ function createGUI() {
 
   document.querySelectorAll("#stitchesHave").forEach((element, index) => {
     element.addEventListener("click", () => {
+      currentPrimaryThread = "stitches";
       const imgElement = element.querySelector("img");
       document.querySelector(".stitchesStyleMaterial").innerHTML = imgElement.alt;
       switch (index) {
@@ -453,7 +455,7 @@ function createGUI() {
       const colorName = option.querySelector(".color-title").textContent;
 
       const color = option.getAttribute("data-color");
-      const selectedMaterial = materialsList.find((mat) => mat.name === stitchesName);
+      const selectedMaterial = materialsList.find((mat) => mat.name === currentPrimaryThread);
 
       if (selectedMaterial) {
         document.querySelector(".stitches\\.002").innerHTML = colorName;
@@ -572,10 +574,8 @@ function createGUI() {
             materialName = "Arm_Side.002";
             break;
           case 3:
-            materialName = "Accent_Color.002";
-            break;
-          case 4:
             materialName = "Headrest.002";
+            console.log("asdasd");
             break;
           // case 5:
           //   materialName = "stitches";

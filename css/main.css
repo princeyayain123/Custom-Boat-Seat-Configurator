@@ -280,7 +280,8 @@ canvas {
   margin-bottom: 5px;
 }
 
-.slider-containers, .modelChairInfo {
+.slider-containers,
+.modelChairInfo {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1523,5 +1524,24 @@ button#generate-pdf {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+#color-options {
+  /* Put ALL your colors here */
+  background: linear-gradient(-45deg, #253551, #ff5733, #4caf50, #ffd700, #8a2be2, #00ced1, #ff1493);
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
