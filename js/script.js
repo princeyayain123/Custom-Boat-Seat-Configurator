@@ -562,26 +562,20 @@ function createGUI() {
   const overlay = document.getElementById("pickerOverlay");
   const picker = document.getElementById("colorPicker");
 
-  // Open picker overlay when swatch clicked
   preview.addEventListener("click", () => {
     overlay.style.display = "flex";
   });
 
-  // Close overlay when clicking outside picker
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) overlay.style.display = "none";
   });
 
-  // Update preview and material color when picking custom color
   picker.addEventListener("input", () => {
-    const pickedColor = picker.value; // hex format, e.g. "#ff0000"
+    const pickedColor = picker.value;
     preview.querySelector(".color-option").style.backgroundColor = pickedColor;
-
-    // Apply to the Three.js material
     currentMaterial.color.set(pickedColor);
   });
 
-  // Set initial preview color from picker
   preview.querySelector(".color-option").style.backgroundColor = picker.value;
 
   function createMaterialSelection(materialsList) {
