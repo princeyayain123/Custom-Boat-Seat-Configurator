@@ -60,15 +60,6 @@
         z-index: 1;
       }
 
-      /* Trigger button */
-      .custom-color-trigger {
-        width: 50px;
-        height: 50px;
-        border-radius: 6px;
-        border: 2px solid #aaa;
-        cursor: pointer;
-      }
-
       /* Overlay */
       .picker-overlay {
         display: none;
@@ -250,7 +241,10 @@
               <div class="color-option" style="background-color: #253551"></div>
               <p class="color-title">Regimental Blue</p>
             </div>
-            <div class="custom-color-trigger" id="colorPreview"></div>
+            <div class="color-option-wrapper" id="colorPreview">
+              <div class="color-option" style="background-color: #253551"></div>
+              <p class="color-title">Custom Color</p>
+            </div>
 
             <div class="picker-overlay" id="pickerOverlay">
               <div class="picker-modal">
@@ -706,30 +700,6 @@
         }
       }
     </script>
-    <script>
-      const preview = document.getElementById("colorPreview");
-      const overlay = document.getElementById("pickerOverlay");
-      const picker = document.getElementById("colorPicker");
-
-      // Open picker overlay when swatch clicked
-      preview.addEventListener("click", () => {
-        overlay.style.display = "flex";
-      });
-
-      // Close overlay when clicking outside picker
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) overlay.style.display = "none";
-      });
-
-      // Update preview color
-      picker.addEventListener("input", () => {
-        preview.style.backgroundColor = picker.value;
-      });
-
-      // Initial color
-      preview.style.backgroundColor = picker.value;
-    </script>
-
     <script src="assets/modules/jquery/jquery-3.7.1.min.js"></script>
     <script src="assets/modules/jquery/jquery-ui.min.js"></script>
     <script src="assets/modules/jquery/jquery.ui.touch-punch.min.js"></script>
