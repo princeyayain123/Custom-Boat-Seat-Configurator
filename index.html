@@ -59,54 +59,6 @@
         pointer-events: none;
         z-index: 1;
       }
-
-      /* Overlay */
-      .picker-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.3);
-        justify-content: center;
-        align-items: center;
-      }
-
-      /* Picker modal */
-      .picker-modal {
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-
-      /* Realistic color input style */
-      .picker-modal input[type="color"] {
-        -webkit-appearance: none;
-        border: none;
-        width: 120px;
-        height: 60px;
-        cursor: pointer;
-        padding: 0;
-        background: none;
-      }
-
-      /* Chrome/Safari color swatch */
-      .picker-modal input[type="color"]::-webkit-color-swatch-wrapper {
-        padding: 0;
-      }
-
-      .picker-modal input[type="color"]::-webkit-color-swatch {
-        border-radius: 6px;
-        border: 1px solid #ccc;
-      }
-
-      /* Firefox */
-      .picker-modal input[type="color"]::-moz-color-swatch {
-        border-radius: 6px;
-        border: 1px solid #ccc;
-      }
     </style>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -242,14 +194,8 @@
               <p class="color-title">Regimental Blue</p>
             </div>
             <div class="color-option-wrapper" id="colorPreview">
-              <div class="color-option" style="background-color: #253551"></div>
+              <div class="color-option" style="background-color: #b31e1e"></div>
               <p class="color-title">Custom Color</p>
-            </div>
-
-            <div class="picker-overlay" id="pickerOverlay">
-              <div class="picker-modal">
-                <input type="color" id="colorPicker" value="#ff0000" />
-              </div>
             </div>
           </div>
         </div>
@@ -302,6 +248,10 @@
             <div class="stitch-block" data-color="#1A2954">
               <div class="color-option" style="background-color: #1a2954"></div>
               <p class="color-title">Blue</p>
+            </div>
+            <div class="stitch-block" id="stitchPreview">
+              <div class="color-option" style="background-color: #b31e1e"></div>
+              <p class="color-title">Custom Color</p>
             </div>
           </div>
 
@@ -371,6 +321,10 @@
               <div class="color-option" style="background-color: #1a2954"></div>
               <p class="color-title">Blue</p>
             </div>
+            <div class="color-block" id="quiltingPreview">
+              <div class="color-option" style="background-color: #b31e1e"></div>
+              <p class="color-title">Custom Color</p>
+            </div>
           </div>
         </div>
 
@@ -395,6 +349,23 @@
               <div class="color-option" style="background-color: #000000"></div>
               <p class="color-title">Stainless Steel</p>
             </div>
+          </div>
+        </div>
+        <div class="color-overlay" id="colorOverlay">
+          <div class="color-modal">
+            <input type="color" id="colorPicker" value="#ff0000" />
+          </div>
+        </div>
+
+        <div class="stitch-overlay" id="stitchOverlay">
+          <div class="stitch-modal">
+            <input type="color" id="stitchPicker" value="#ff0000" />
+          </div>
+        </div>
+
+        <div class="quilting-overlay" id="quiltingOverlay">
+          <div class="quilting-modal">
+            <input type="color" id="quiltingPicker" value="#ff0000" />
           </div>
         </div>
       </div>

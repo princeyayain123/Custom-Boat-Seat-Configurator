@@ -125,7 +125,6 @@ const startPDFApp = () => {
       }
 
       const data = await response.json();
-      console.log("Uploaded file URL:", data.url);
 
       updateStatus("File uploaded successfully!");
       showSuccess();

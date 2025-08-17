@@ -554,11 +554,11 @@ canvas {
   width: 30px;
 }
 
-.quilting_stitches {
+.containers {
   position: absolute;
-  background-color: white;
   right: 5px;
   top: 0;
+  background-color: white;
   width: 400px;
   height: 98.5%;
   border: 2px solid black;
@@ -569,6 +569,14 @@ canvas {
   scrollbar-width: none;
   z-index: 100;
   transform: translateY(0.5%);
+}
+
+.quilting_stitches {
+  position: relative; /* instead of absolute */
+  height: 100%;
+  transition: right 0.7s ease, opacity 0.7s ease;
+  overflow: auto;
+  z-index: 100;
 }
 
 .quilting_stitches::-webkit-scrollbar {
@@ -1527,13 +1535,6 @@ button#generate-pdf {
   }
 }
 
-#color-options {
-  /* Put ALL your colors here */
-  background: linear-gradient(-45deg, #253551, #ff5733, #4caf50, #ffd700, #8a2be2, #00ced1, #ff1493);
-  background-size: 400% 400%;
-  animation: gradientShift 10s ease infinite;
-}
-
 @keyframes gradientShift {
   0% {
     background-position: 0% 50%;
@@ -1544,4 +1545,72 @@ button#generate-pdf {
   100% {
     background-position: 0% 50%;
   }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.color-overlay,
+.stitch-overlay,
+.quilting-overlay {
+  display: none;
+  position: fixed; /* <-- not absolute */
+  inset: 0; /* top:0, right:0, bottom:0, left:0 */
+  background: rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+body.show-overlay .color-overlay,
+body.show-overlay .stitch-overlay,
+body.show-overlay .quilting-overlay {
+  display: flex;
+}
+
+.color-modal,
+.stitch-modal,
+.quilting-modal {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.color-modal input[type="color"],
+.stitch-modal input[type="color"],
+.quilting-modal input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 120px;
+  height: 60px;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+}
+
+.color-modal input[type="color"]::-webkit-color-swatch-wrapper,
+.stitch-modal input[type="color"]::-webkit-color-swatch-wrapper,
+.quilting-modal input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-modal input[type="color"]::-webkit-color-swatch,
+.stitch-modal input[type="color"]::-webkit-color-swatch,
+.quilting-modal input[type="color"]::-webkit-color-swatch {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Firefox */
+.color-modal input[type="color"]::-moz-color-swatch,
+.stitch-modal input[type="color"]::-moz-color-swatch,
+.quilting-modal input[type="color"]::-moz-color-swatch {
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }

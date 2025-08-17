@@ -6,7 +6,7 @@
 }
 
 @media (max-width: 768px) {
-  .quilting_stitches {
+  .containers {
     width: 98%;
     height: 240px;
     top: auto;
@@ -29,7 +29,7 @@
 
   .selectedMaterials {
     right: 0; /* Align to the right */
-    bottom: 260px; /* Position above .quilting_stitches */
+    bottom: 260px;
     top: auto; /* Reset top */
     height: auto; /* Adjust height */
     width: 100%; /* Full width for mobile */
@@ -95,7 +95,6 @@
   }
 }
 
-
 @media (max-width: 600px) {
   .agreementContainer {
     top: 0 !important;
@@ -153,6 +152,7 @@
   .coloring_options,
   .material_options {
     padding: 0px 20px;
+    padding-bottom: 20px;
   }
 
   .configurationMaterial p {

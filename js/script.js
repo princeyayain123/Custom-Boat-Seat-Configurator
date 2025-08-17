@@ -17,6 +17,7 @@ let textureName = "quilting_a.001";
 let materialName = "Main_Color.002";
 let currentMaterial = "Main_Color.002";
 let currentPrimaryThread = "stitches";
+let quiltedStitcheName = "quilting_a_stitches.001";
 let lastTouchDistance = null;
 const fadeMaterials = new Map();
 const container = document.getElementById("container");
@@ -181,7 +182,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/TEST4.glb", (gltf) => {
+  loader.load("./assets/model/TEST5.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
@@ -189,7 +190,6 @@ function loadModel() {
 
     model.traverse((object) => {
       if (object.isMesh) {
-        console.log(object.name);
         object.castShadow = true;
         object.receiveShadow = true;
         if (!materialsList.includes(object.material)) {
@@ -258,7 +258,7 @@ function createGUI() {
       // If mesh is visible, hide Stitch_Single_Armrest001
       if (mesh.visible && stitchArmrest) {
         currentPrimaryThread = "Accent_Color.002";
-        stitchArmrest.visible = false;
+        if (model !== "accent_001") stitchArmrest.visible = false;
       }
     }
   }
@@ -420,7 +420,7 @@ function createGUI() {
       document.querySelector(".stitchesStyleMaterial").innerHTML = imgElement.alt;
       switch (index) {
         case 0:
-          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005", "main_003003"]);
+          toggleMeshes("Stitch_Single_Armrest001", ["Stitch_Single_Backrest_Back005", "main_002002"]);
           break;
         case 1:
           toggleMeshes("", ["Stitch_Double_Backrest_Front_012", "Stitch_Single_Armrest001"]);
@@ -435,10 +435,10 @@ function createGUI() {
   const perimeterBlock = document.getElementById("perimeterHave");
   const perimeterImg = perimeterBlock.querySelector("img"); // Get the <img> inside
 
-  toggleVisibilty("main_003003", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+  toggleVisibilty("main_002002", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
 
   perimeterBlock.addEventListener("click", () => {
-    toggleVisibilty("main_003003", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+    toggleVisibilty("main_002002", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
   });
 
   const insertBlock = document.getElementById("insertHave");
@@ -448,7 +448,24 @@ function createGUI() {
     toggleVisibilty("accent_001", "assets/textures/innerhave.png", "assets/textures/innernone.png", insertImg);
   });
 
-  const quiltedStitcheName = "quilting_a_stitches.001";
+  function changeColor(color, colorName) {
+    if (["quilting_a.001", "quilting_b.002", "quilting_c", "quilting_d", "quilting_e", "quilting_f", "quilting_a_stitches.001"].includes(materialName)) {
+      materialName = "quilting_a.001";
+    }
+
+    document.getElementById(materialName).innerHTML = colorName;
+    currentMaterial.color.set(color);
+  }
+
+  document.querySelectorAll(".color-option-wrapper").forEach((element) => {
+    element.addEventListener("click", () => {
+      const color = element.dataset.color;
+      const colorName = element.querySelector(".color-title").textContent;
+      if (color) {
+        changeColor(color, colorName);
+      }
+    });
+  });
 
   document.querySelectorAll(".stitch-block").forEach((option) => {
     option.addEventListener("click", () => {
@@ -458,9 +475,13 @@ function createGUI() {
       const selectedMaterial = materialsList.find((mat) => mat.name === currentPrimaryThread);
 
       if (selectedMaterial) {
-        document.querySelector(".stitches\\.002").innerHTML = colorName;
         selectedMaterial.color.set(color);
         selectedMaterial.needsUpdate = true;
+        if (selectedMaterial.name === "stitches") {
+          document.querySelector(".stitches\\.002").innerHTML = colorName;
+        } else if (selectedMaterial.name === "Accent_Color.002") {
+          document.querySelector(".Accent_Color\\.002").innerHTML = colorName;
+        }
       } else {
         console.error(`Material does not support color property.`);
       }
@@ -482,6 +503,71 @@ function createGUI() {
         console.error(`Material does not support color property.`);
       }
     });
+  });
+
+  function setupColorPicker({ previewId, overlayId, pickerId, onColorChange }) {
+    const preview = document.getElementById(previewId);
+    const overlay = document.getElementById(overlayId);
+    const picker = document.getElementById(pickerId);
+
+    // Open overlay
+    preview.addEventListener("click", () => {
+      overlay.style.display = "flex";
+    });
+
+    // Close overlay on outside click
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.style.display = "none";
+    });
+
+    // Color change logic
+    picker.addEventListener("input", () => {
+      const pickedColor = picker.value;
+      preview.querySelector(".color-option").style.backgroundColor = pickedColor;
+      onColorChange(pickedColor);
+    });
+  }
+
+  // === Usage ===
+
+  // For main color
+  setupColorPicker({
+    previewId: "colorPreview",
+    overlayId: "colorOverlay",
+    pickerId: "colorPicker",
+    onColorChange: (pickedColor) => {
+      currentMaterial.color.set(pickedColor);
+      document.getElementById(materialName).innerHTML = pickedColor;
+    },
+  });
+
+  // For stitches
+  setupColorPicker({
+    previewId: "stitchPreview",
+    overlayId: "stitchOverlay",
+    pickerId: "stitchPicker",
+    onColorChange: (pickedColor) => {
+      const selectedMaterial = materialsList.find((mat) => mat.name === currentPrimaryThread);
+      selectedMaterial.color.set(pickedColor);
+
+      if (selectedMaterial.name === "stitches") {
+        document.querySelector(".stitches\\.002").innerHTML = pickedColor;
+      } else if (selectedMaterial.name === "Accent_Color.002") {
+        document.querySelector(".Accent_Color\\.002").innerHTML = pickedColor;
+      }
+    },
+  });
+
+  // For quilting
+  setupColorPicker({
+    previewId: "quiltingPreview",
+    overlayId: "quiltingOverlay",
+    pickerId: "quiltingPicker",
+    onColorChange: (pickedColor) => {
+      const selectedMaterial = materialsList.find((mat) => mat.name === quiltedStitcheName);
+      selectedMaterial.color.set(pickedColor);
+      document.querySelector(".quiltingColorMaterial").innerHTML = pickedColor;
+    },
   });
 
   document.querySelectorAll(".material-block").forEach((option) => {
@@ -539,45 +625,6 @@ function createGUI() {
     }
   });
 
-  function changeColor(color, colorName) {
-    if (["quilting_a.001", "quilting_b.002", "quilting_c", "quilting_d", "quilting_e", "quilting_f", "quilting_a_stitches.001"].includes(materialName)) {
-      materialName = "quilting_a.001";
-    }
-
-    document.getElementById(materialName).innerHTML = colorName;
-    currentMaterial.color.set(color);
-  }
-
-  document.querySelectorAll(".color-option-wrapper").forEach((element) => {
-    element.addEventListener("click", () => {
-      const color = element.dataset.color;
-      const colorName = element.querySelector(".color-title").textContent;
-      if (color) {
-        changeColor(color, colorName);
-      }
-    });
-  });
-
-  const preview = document.getElementById("colorPreview");
-  const overlay = document.getElementById("pickerOverlay");
-  const picker = document.getElementById("colorPicker");
-
-  preview.addEventListener("click", () => {
-    overlay.style.display = "flex";
-  });
-
-  overlay.addEventListener("click", (e) => {
-    if (e.target === overlay) overlay.style.display = "none";
-  });
-
-  picker.addEventListener("input", () => {
-    const pickedColor = picker.value;
-    preview.querySelector(".color-option").style.backgroundColor = pickedColor;
-    currentMaterial.color.set(pickedColor);
-  });
-
-  preview.querySelector(".color-option").style.backgroundColor = picker.value;
-
   function createMaterialSelection(materialsList) {
     const circles = document.querySelectorAll(".selectedMaterials > div");
 
@@ -595,7 +642,6 @@ function createGUI() {
             break;
           case 3:
             materialName = "Headrest.002";
-            console.log("asdasd");
             break;
           // case 5:
           //   materialName = "stitches";
