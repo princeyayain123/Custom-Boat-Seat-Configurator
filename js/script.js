@@ -182,7 +182,7 @@ function loadModel() {
   });
 
   const loader = new GLTFLoader(loadingManager);
-  loader.load("./assets/model/TEST5.glb", (gltf) => {
+  loader.load("./assets/model/model.glb", (gltf) => {
     model = gltf.scene;
     model.scale.set(2.5, 2.5, 2.5);
     model.position.y = -1;
