@@ -2,6 +2,8 @@
 
 A web-based 3D boat seat configurator that allows customers to personalize their boat seats and place orders. Built using HTML, CSS, JavaScript, Three.js (for 3D rendering), Node.js with Express (for backend services), and MongoDB (for storing customer and configuration data).
 
+<img width="1908" height="929" alt="image" src="https://github.com/user-attachments/assets/8916ad6d-9862-46ad-b710-e7a98c06b2b5" />
+
 ---
 
 ## Features
