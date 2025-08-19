@@ -505,11 +505,10 @@ function createGUI() {
     });
   });
 
-  function setupColorPicker({ previewId, overlayId, pickerId, onColorChange }) {
+  function setupColorPicker({ previewId, overlayId, pickerId }) {
     const preview = document.getElementById(previewId);
     const overlay = document.getElementById(overlayId);
-    const picker = document.getElementById(pickerId);
-
+    
     // Open overlay
     preview.addEventListener("click", () => {
       overlay.style.display = "flex";
@@ -518,13 +517,6 @@ function createGUI() {
     // Close overlay on outside click
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) overlay.style.display = "none";
-    });
-
-    // Color change logic
-    picker.addEventListener("input", () => {
-      const pickedColor = picker.value;
-      preview.querySelector(".color-option").style.backgroundColor = pickedColor;
-      onColorChange(pickedColor);
     });
   }
 
@@ -535,10 +527,6 @@ function createGUI() {
     previewId: "colorPreview",
     overlayId: "colorOverlay",
     pickerId: "colorPicker",
-    onColorChange: (pickedColor) => {
-      currentMaterial.color.set(pickedColor);
-      document.getElementById(materialName).innerHTML = pickedColor;
-    },
   });
 
   // For stitches
@@ -546,16 +534,6 @@ function createGUI() {
     previewId: "stitchPreview",
     overlayId: "stitchOverlay",
     pickerId: "stitchPicker",
-    onColorChange: (pickedColor) => {
-      const selectedMaterial = materialsList.find((mat) => mat.name === currentPrimaryThread);
-      selectedMaterial.color.set(pickedColor);
-
-      if (selectedMaterial.name === "stitches") {
-        document.querySelector(".stitches\\.002").innerHTML = pickedColor;
-      } else if (selectedMaterial.name === "Accent_Color.002") {
-        document.querySelector(".Accent_Color\\.002").innerHTML = pickedColor;
-      }
-    },
   });
 
   // For quilting
@@ -563,11 +541,6 @@ function createGUI() {
     previewId: "quiltingPreview",
     overlayId: "quiltingOverlay",
     pickerId: "quiltingPicker",
-    onColorChange: (pickedColor) => {
-      const selectedMaterial = materialsList.find((mat) => mat.name === quiltedStitcheName);
-      selectedMaterial.color.set(pickedColor);
-      document.querySelector(".quiltingColorMaterial").innerHTML = pickedColor;
-    },
   });
 
   document.querySelectorAll(".material-block").forEach((option) => {

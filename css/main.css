@@ -21,7 +21,7 @@ p,
 label {
   font-family: Arial, sans-serif;
   font-weight: 100 !important;
-  caret-color: transparent;
+  color: #333333 !important;
 }
 
 .form-group {
@@ -83,6 +83,10 @@ h1 {
 button {
   cursor: pointer;
   text-transform: uppercase;
+}
+
+.m-0 {
+  margin: 0 !important;
 }
 
 #loading-screen {
@@ -246,6 +250,10 @@ canvas {
   display: flex;
   flex-wrap: wrap;
   padding: 0px 20px;
+}
+
+.test button p {
+  color: black !important;
 }
 
 .slider-container {
@@ -1613,4 +1621,11 @@ body.show-overlay .quilting-overlay {
 .quilting-modal input[type="color"]::-moz-color-swatch {
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+
+.color-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

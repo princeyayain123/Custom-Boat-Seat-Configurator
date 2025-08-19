@@ -5,6 +5,16 @@
   }
 }
 
+@media screen and (max-width: 991px) {
+  #customerDetails {
+    padding-bottom: 0 !important;
+  }
+
+  #orderDetails {
+    padding-top: 0 !important;
+  }
+}
+
 @media (max-width: 768px) {
   .containers {
     width: 98%;
