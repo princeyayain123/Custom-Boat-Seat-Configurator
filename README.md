@@ -52,6 +52,9 @@ The configurator is fully responsive and tested on multiple devices:
 - iPad & tablets (optimized one-column layout)  
 - Desktops (full 3D experience)  
 
+<img width="1920" height="1080" alt="Nice" src="https://github.com/user-attachments/assets/741119e3-dcbd-4e46-85fe-57b92f182d5d" />
+
+---
 
 Note:
 
