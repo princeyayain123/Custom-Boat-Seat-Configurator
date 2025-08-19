@@ -45,6 +45,14 @@ A web-based 3D boat seat configurator that allows customers to personalize their
 
 ---
 
+## Responsive Design
+
+The configurator is fully responsive and tested on multiple devices:
+- iPhone & Android (mobile-friendly interface)  
+- iPad & tablets (optimized one-column layout)  
+- Desktops (full 3D experience)  
+
+
 Note:
 
 Freelance Project – Developed for a client to enable real-time customization and ordering of boat seats online.
