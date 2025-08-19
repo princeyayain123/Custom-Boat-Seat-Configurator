@@ -42,3 +42,7 @@ A web-based 3D boat seat configurator that allows customers to personalize their
   - MongoDB
 
 ---
+
+Note:
+
+Freelance Project – Developed for a client to enable real-time customization and ordering of boat seats online.
