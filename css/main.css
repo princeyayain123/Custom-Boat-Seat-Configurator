@@ -53,6 +53,10 @@ label {
   border-radius: 5px;
 }
 
+label.colorName {
+  top: 50% ;
+}
+
 input {
   width: 100%;
   padding: 12px 10px;
@@ -1623,8 +1627,9 @@ body.show-overlay .quilting-overlay {
   border: 1px solid #ccc;
 }
 
-
-.color-modal {
+.color-modal,
+.stitch-modal,
+.quilting-modal {
   display: flex;
   flex-direction: column;
   gap: 20px;
