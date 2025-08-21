@@ -27,16 +27,14 @@ const startPDFApp = () => {
   async function startSession() {
     const res = await fetch("https://pompanetteserver.onrender.com/start-upload-session", {
       method: "POST",
-      // No need for credentials here since JWT is returned in body
     });
 
     if (!res.ok) throw new Error("Failed to start upload session");
 
     const data = await res.json();
-    const token = data.token; // backend should return { token: "JWT_TOKEN_HERE" }
+    const token = data.token;
     if (!token) throw new Error("No token received");
 
-    // Save token locally to use for upload requests
     localStorage.setItem("uploadToken", token);
   }
 
@@ -117,7 +115,6 @@ const startPDFApp = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        // Don't need credentials when using JWT in header
       });
 
       if (!response.ok) {
@@ -155,7 +152,6 @@ const startPDFApp = () => {
   function drawing() {
     let drawing = false;
 
-    // Mouse Events
     canvas.addEventListener("mousedown", () => (drawing = true));
     canvas.addEventListener("mouseup", () => {
       drawing = false;
@@ -163,18 +159,41 @@ const startPDFApp = () => {
     });
     canvas.addEventListener("mousemove", drawMouse);
 
-    // Touch Events
-    // canvas.addEventListener("touchstart", (e) => {
-    //   e.preventDefault(); // Prevent scrolling while drawing
-    //   drawing = true;
-    // });
+    canvas.addEventListener("touchstart", (event) => {
+      drawing = true;
+      const rect = canvas.getBoundingClientRect();
+      const touch = event.touches[0];
+
+      const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+      const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+
+      ctx.moveTo(x, y);
+      event.preventDefault();
+    });
 
     canvas.addEventListener("touchend", () => {
       drawing = false;
       ctx.beginPath();
     });
 
-    canvas.addEventListener("touchmove", drawTouch);
+    canvas.addEventListener("touchmove", (event) => {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const touch = event.touches[0];
+
+      const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+      const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "black";
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+
+      event.preventDefault();
+    });
 
     function drawMouse(event) {
       if (!drawing) return;
@@ -185,23 +204,6 @@ const startPDFApp = () => {
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(event.offsetX, event.offsetY);
-    }
-
-    function drawTouch(event) {
-      if (!drawing) return;
-
-      const rect = canvas.getBoundingClientRect();
-      const touch = event.touches[0];
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-
-      ctx.lineWidth = 2;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = "black";
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x, y);
     }
   }
 
@@ -231,7 +233,6 @@ const startPDFApp = () => {
     document.querySelector(".inputText").classList.toggle("disable", !isValid);
   }
 
-  // Attach to all input fields
   ["first-name", "last-name", "street-address", "town-city", "country", "postal-zip", "contact-number", "email-address"].forEach((id) => {
     document.getElementById(id).addEventListener("input", checkInputs);
   });
