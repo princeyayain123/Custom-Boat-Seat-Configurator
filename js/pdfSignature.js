@@ -2,9 +2,9 @@ import { PDFDocument } from "https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/+esm";
 const canvas = document.getElementById("signature-pad");
 const ctx = canvas.getContext("2d");
 
-const EMAIL_SERVICE_ID = "service_nwdixv2";
-const EMAIL_TEMPLATE_ID = "template_rgt0cup";
-const EMAIL_PUBLIC_KEY = "CFWYk5-z-3vUxO-P3";
+const EMAIL_SERVICE_ID = "service_upojsiv";
+const EMAIL_TEMPLATE_ID = "template_j2nzhnp";
+const EMAIL_PUBLIC_KEY = "G8ConllZY_YLSGplT";
 
 const startPDFApp = () => {
   async function init() {

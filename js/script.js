@@ -505,10 +505,14 @@ function createGUI() {
     });
   });
 
-  function setupColorPicker({ previewId, overlayId, pickerId }) {
+  function setupColorPicker({ previewId, overlayId, type }) {
     const preview = document.getElementById(previewId);
     const overlay = document.getElementById(overlayId);
-    
+
+    const inputs = overlay.querySelectorAll("input");
+    const nameInput = inputs[0]; // color name
+    const codeInput = inputs[1]; // color code
+
     // Open overlay
     preview.addEventListener("click", () => {
       overlay.style.display = "flex";
@@ -518,29 +522,71 @@ function createGUI() {
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) overlay.style.display = "none";
     });
+
+    // === Handle input changes ===
+    function updateColor() {
+      const colorName = nameInput.value.trim();
+      const color = codeInput.value.trim();
+
+      // Only accept valid hex
+      if (!/^#([0-9A-F]{3}){1,2}$/i.test(color)) return;
+
+      if (type === "main") {
+        // MAIN MATERIAL
+        document.getElementById(materialName).innerHTML = colorName;
+        currentMaterial.color.set(color);
+      } else if (type === "stitch") {
+        // STITCH MATERIAL
+        const selectedMaterial = materialsList.find((mat) => mat.name === currentPrimaryThread);
+
+        if (selectedMaterial) {
+          selectedMaterial.color.set(color);
+          selectedMaterial.needsUpdate = true;
+
+          if (selectedMaterial.name === "stitches") {
+            document.querySelector(".stitches\\.002").innerHTML = colorName;
+          } else if (selectedMaterial.name === "Accent_Color.002") {
+            document.querySelector(".Accent_Color\\.002").innerHTML = colorName;
+          }
+        }
+      } else if (type === "quilting") {
+        // QUILTING MATERIAL
+        const selectedMaterial = materialsList.find((mat) => mat.name === quiltedStitcheName);
+
+        if (selectedMaterial) {
+          document.querySelector(".quiltingColorMaterial").innerHTML = colorName;
+          selectedMaterial.color.set(color);
+          selectedMaterial.needsUpdate = true;
+        }
+      }
+
+      // Preview background too
+      preview.querySelector(".color-option").style.backgroundColor = color;
+      preview.querySelector(".color-title").textContent = colorName;
+    }
+
+    // Attach live updates
+    nameInput.addEventListener("input", updateColor);
+    codeInput.addEventListener("input", updateColor);
   }
 
   // === Usage ===
-
-  // For main color
   setupColorPicker({
     previewId: "colorPreview",
     overlayId: "colorOverlay",
-    pickerId: "colorPicker",
+    type: "main",
   });
 
-  // For stitches
   setupColorPicker({
     previewId: "stitchPreview",
     overlayId: "stitchOverlay",
-    pickerId: "stitchPicker",
+    type: "stitch",
   });
 
-  // For quilting
   setupColorPicker({
     previewId: "quiltingPreview",
     overlayId: "quiltingOverlay",
-    pickerId: "quiltingPicker",
+    type: "quilting",
   });
 
   document.querySelectorAll(".material-block").forEach((option) => {
