@@ -669,7 +669,7 @@ canvas {
   margin-bottom: 0px;
   font-size: 12px;
   text-align: center;
-  color: #333;
+  color: #333 !important;
   cursor: pointer;
 }
 
