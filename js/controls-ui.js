@@ -79,7 +79,9 @@ const UIController = {
       const body = document.getElementById("accordionBody");
       body.classList.toggle("open");
 
-      // Prevent parent onclick if button was clicked
+      const caret = this.querySelector("i");
+      caret.classList.toggle("rotated");
+      
       if (e && e.stopPropagation) e.stopPropagation();
     });
   },
@@ -125,11 +127,14 @@ const UIController = {
       [".Arm_Side\\.002", ".arm-color"],
       [".Accent_Color\\.002", ".piping-color"],
       [".Headrest\\.002", ".head-color"],
-      [".stitchesStyleMaterial", ".stitch-style"],
       [".stitches\\.002", ".stitch-color"],
-      [".quiltingStyleMaterial", ".quilt-style"],
       [".quiltingColorMaterial", ".quilt-color"],
       [".hardwareColor", ".hardware-color"],
+
+      [".perimeter_piping", ".perimeter-piping"],
+      [".insert_piping", ".insert-piping"],
+      [".stitchesStyleMaterial", ".stitch-style"],
+      [".quiltingStyleMaterial", ".quilt-style"],
     ];
 
     mappings.forEach(([from, to]) => {

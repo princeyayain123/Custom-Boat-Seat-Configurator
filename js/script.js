@@ -245,17 +245,20 @@ function createGUI() {
     });
   }
 
-  function toggleVisibilty(model, none, have, img) {
+  function toggleVisibilty(model, none, have, img, span) {
     const mesh = scene.getObjectByName(model);
     const stitchArmrest = scene.getObjectByName("Stitch_Single_Armrest001");
 
     if (mesh) {
       mesh.visible = !mesh.visible;
 
-      // Change image src based on visibility
-      img.src = mesh.visible ? none : have;
+      // update image
+      img.src = mesh.visible ? have : none;
 
-      // If mesh is visible, hide Stitch_Single_Armrest001
+      // update span text
+      span.textContent = mesh.visible ? "Have" : "None";
+
+      // special case for stitch
       if (mesh.visible && stitchArmrest) {
         currentPrimaryThread = "Accent_Color.002";
         if (model !== "accent_001") stitchArmrest.visible = false;
@@ -432,20 +435,25 @@ function createGUI() {
     });
   });
 
+  // Perimeter Piping
   const perimeterBlock = document.getElementById("perimeterHave");
-  const perimeterImg = perimeterBlock.querySelector("img"); // Get the <img> inside
+  const perimeterImg = perimeterBlock.querySelector("img");
+  const perimeterSpan = document.getElementById("perimeter_piping");
 
-  toggleVisibilty("main_002002", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+  toggleVisibilty("main_002002", "assets/textures/perimeterhave.png", "assets/textures/perimeternone.png", perimeterImg, perimeterSpan);
 
   perimeterBlock.addEventListener("click", () => {
-    toggleVisibilty("main_002002", "assets/textures/perimeternone.png", "assets/textures/perimeterhave.png", perimeterImg);
+    toggleVisibilty("main_002002", "assets/textures/perimeterhave.png", "assets/textures/perimeternone.png", perimeterImg, perimeterSpan);
+    document.getElementById("stitchesStyleMaterial").innerHTML = "None";
   });
 
+  // Insert Piping
   const insertBlock = document.getElementById("insertHave");
   const insertImg = insertBlock.querySelector("img");
+  const insertSpan = document.getElementById("insert_piping");
 
   insertBlock.addEventListener("click", () => {
-    toggleVisibilty("accent_001", "assets/textures/innerhave.png", "assets/textures/innernone.png", insertImg);
+    toggleVisibilty("accent_001", "assets/textures/innernone.png", "assets/textures/innerhave.png", insertImg, insertSpan);
   });
 
   function changeColor(color, colorName) {

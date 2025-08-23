@@ -184,6 +184,9 @@
   .ui button {
     font-size: 12px;
   }
+  h3 {
+    font-size: 18px !important;
+  }
 }
 
 @media (max-width: 414px) {

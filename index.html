@@ -85,14 +85,7 @@
       }
 
       async function loadScripts() {
-        const scripts = [
-          { src: "js/email.min.js" },
-          { src: "js/countrySelect.js" }, // <-- this must be loaded before using .countrySelect()
-          { src: "assets/modules/utils/intlTelInput.min.js" },
-          { src: "js/script.js", type: "module" },
-          { src: "js/controls-ui.js", type: "module" },
-          { src: "js/pdfSignature.js", type: "module" },
-        ];
+        const scripts = [{ src: "js/email.min.js" }, { src: "js/countrySelect.js" }, { src: "assets/modules/utils/intlTelInput.min.js" }, { src: "js/script.js", type: "module" }, { src: "js/controls-ui.js", type: "module" }, { src: "js/pdfSignature.js", type: "module" }];
 
         for (const { src, type } of scripts) {
           await new Promise((resolve, reject) => {
@@ -104,7 +97,6 @@
             document.body.appendChild(script);
           });
 
-          // Run countrySelect only after it's loaded
           if (src === "js/countrySelect.js") {
             if (typeof $ !== "undefined" && typeof $.fn.countrySelect === "function") {
               $("#country").countrySelect({
@@ -115,7 +107,6 @@
             }
           }
 
-          // Initialize intlTelInput after it’s loaded
           if (src === "assets/modules/utils/intlTelInput.min.js") {
             const phoneInputField = document.querySelector("#contact-number");
             if (phoneInputField) {
@@ -353,22 +344,40 @@
         </div>
         <div class="color-overlay" id="colorOverlay">
           <div class="color-modal">
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Color Name:</p><input type="text" class="m-0" placeholder="Spradling, Beige" /> </div>
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Hex Color Code:</p><input type="text" class="m-0" placeholder="#E4D5B4" /> </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Color Name:</p>
+              <input type="text" class="m-0" placeholder="Spradling, Beige" />
+            </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Hex Color Code:</p>
+              <input type="text" class="m-0" placeholder="#E4D5B4" />
+            </div>
           </div>
         </div>
 
         <div class="stitch-overlay" id="stitchOverlay">
           <div class="stitch-modal">
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Color Name:</p><input type="text" class="m-0" placeholder="Spradling, Beige" /> </div>
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Hex Color Code:</p><input type="text" class="m-0" placeholder="#E4D5B4" /> </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Color Name:</p>
+              <input type="text" class="m-0" placeholder="Spradling, Beige" />
+            </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Hex Color Code:</p>
+              <input type="text" class="m-0" placeholder="#E4D5B4" />
+            </div>
           </div>
         </div>
 
         <div class="quilting-overlay" id="quiltingOverlay">
           <div class="quilting-modal">
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Color Name:</p><input type="text" class="m-0" placeholder="Spradling, Beige" /> </div>
-            <div class="form-group form-two m-0 modals-flex"><p class="colorName" for="ColorName">Enter Hex Color Code:</p><input type="text" class="m-0" placeholder="#E4D5B4" /> </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Color Name:</p>
+              <input type="text" class="m-0" placeholder="Spradling, Beige" />
+            </div>
+            <div class="form-group form-two m-0 modals-flex">
+              <p class="colorName" for="ColorName">Enter Hex Color Code:</p>
+              <input type="text" class="m-0" placeholder="#E4D5B4" />
+            </div>
           </div>
         </div>
       </div>
@@ -398,42 +407,55 @@
     </div>
 
     <div class="configurationMaterial d-none">
+      <div class="color-box">
+        <h3 class="mt-2">COLORS</h3>
+        <p>
+          <span class="title">Main Color: </span>
+          <span class="Main_Color.002" id="Main_Color.002">None</span>
+        </p>
+        <p>
+          <span class="title">Secondary Color: </span>
+          <span class="quilting_a.001" id="quilting_a.001">None</span>
+        </p>
+        <p>
+          <span class="title">Arm Rest Color: </span>
+          <span class="Arm_Side.002" id="Arm_Side.002">None</span>
+        </p>
+        <p>
+          <span class="title">Head Rest Color: </span>
+          <span class="Headrest.002" id="Headrest.002">None</span>
+        </p>
+        <p>
+          <span class="title">Piping Color: </span>
+          <span class="Accent_Color.002" id="Accent_Color.002">None</span>
+        </p>
+        <p>
+          <span class="title">Stitch Color: </span>
+          <span class="stitches.002" id="stitches">None</span>
+        </p>
+        <p><span class="title">Quilting Stitches Color: </span><span class="quiltingColorMaterial">None</span></p>
+        <p>
+          <span class="title">Hardware Color:</span>
+          <span class="hardwareColor" id="hardwareColor">White</span>
+        </p>
+      </div>
+
+      <h3 class="mt-2">OPTIONS</h3>
       <p>
-        <span class="title">Main Color: </span>
-        <span class="Main_Color.002" id="Main_Color.002">None</span>
+        <span class="title">Perimeter Piping: </span>
+        <span class="perimeter_piping" id="perimeter_piping">None</span>
       </p>
       <p>
-        <span class="title">Secondary Color: </span>
-        <span class="quilting_a.001" id="quilting_a.001">None</span>
-      </p>
-      <p>
-        <span class="title">Arm Rest Color: </span>
-        <span class="Arm_Side.002" id="Arm_Side.002">None</span>
-      </p>
-      <p>
-        <span class="title">Piping Color: </span>
-        <span class="Accent_Color.002" id="Accent_Color.002">None</span>
-      </p>
-      <p>
-        <span class="title">Head Rest Color: </span>
-        <span class="Headrest.002" id="Headrest.002">None</span>
+        <span class="title">Insert Piping: </span>
+        <span class="insert_piping" id="insert_piping">Have</span>
       </p>
       <p>
         <span class="title">Stitch Style: </span>
-        <span class="stitchesStyleMaterial" id="stitchesStyleMaterial">None</span>
-      </p>
-      <p>
-        <span class="title">Stitch Color: </span>
-        <span class="stitches.002" id="stitches">None</span>
+        <span class="stitchesStyleMaterial" id="stitchesStyleMaterial">Double Stitches</span>
       </p>
       <p>
         <span class="title">Quilting Stitches Style: </span>
         <span class="quiltingStyleMaterial" id="quiltingStyleMaterial">None</span>
-      </p>
-      <p><span class="title">Quilting Stitches Color: </span><span class="quiltingColorMaterial">None</span></p>
-      <p>
-        <span class="title">Hardware Color:</span>
-        <span class="hardwareColor" id="hardwareColor">White</span>
       </p>
     </div>
 
@@ -550,12 +572,16 @@
                     <div class="accordion-header">
                       <div id="picture" class="picture" alt="Seat image"></div>
                       <div class="modelChairInfo">
-                        <div class="modelChair"><h4 style="margin: 0">Seat Model: 8400 Series</h4></div>
+                        <div class="modelChair">
+                          <h4 style="margin: 0">Seat Model: 8400 Series</h4>
+                          <i class="bi bi-caret-right-fill"></i>
+                        </div>
                         <div class="qty">Qty: 1</div>
                       </div>
                     </div>
 
                     <div class="accordion-body" id="accordionBody">
+                      <h3 class="mt-2">COLORS</h3>
                       <div class="form-group">
                         <p>Main Color: <span class="main-color">Navy Blue</span></p>
                       </div>
@@ -569,23 +595,15 @@
                       </div>
 
                       <div class="form-group">
-                        <p>Piping Color: <span class="piping-color">Red</span></p>
-                      </div>
-
-                      <div class="form-group">
                         <p>Head Rest Color: <span class="head-color">Gray</span></p>
                       </div>
 
                       <div class="form-group">
-                        <p>Stitch Style: <span class="stitch-style">Double Stitches</span></p>
+                        <p>Piping Color: <span class="piping-color">Red</span></p>
                       </div>
 
                       <div class="form-group">
                         <p>Stitch Color: <span class="stitch-color">White</span></p>
-                      </div>
-
-                      <div class="form-group">
-                        <p>Quilting Stitches Style: <span class="quilt-style">Diamond</span></p>
                       </div>
 
                       <div class="form-group">
@@ -594,6 +612,24 @@
 
                       <div class="form-group">
                         <p>Hardware Color: <span class="hardware-color">Chrome</span></p>
+                      </div>
+
+                      <h3 class="mt-2">OPTIONS</h3>
+
+                      <div class="form-group">
+                        <p>Perimeter Piping: <span class="perimeter-piping">None</span></p>
+                      </div>
+
+                      <div class="form-group">
+                        <p>Insert Piping: <span class="insert-piping">Have</span></p>
+                      </div>
+
+                      <div class="form-group">
+                        <p>Stitch Style: <span class="stitch-style">Double Stitches</span></p>
+                      </div>
+
+                      <div class="form-group">
+                        <p>Quilting Stitches Style: <span class="quilt-style">Diamond</span></p>
                       </div>
                     </div>
                   </div>

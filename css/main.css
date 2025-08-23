@@ -34,7 +34,7 @@ label {
 }
 
 .form-group > div {
-  flex: 1; /* each input takes 50% width */
+  flex: 1;
   position: relative;
 }
 
@@ -53,7 +53,7 @@ label {
 }
 
 label.colorName {
-  top: 50% ;
+  top: 50%;
 }
 
 input {
@@ -76,7 +76,6 @@ h1 {
   font-weight: 700 !important;
   caret-color: transparent;
   font-size: 24px;
-  margin-bottom: 0;
 }
 
 h1 {
@@ -90,6 +89,16 @@ button {
 
 .m-0 {
   margin: 0 !important;
+}
+
+.mt-2 {
+  margin-top: 15px !important;
+  padding-bottom: 5px !important;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.171);
+}
+
+.accordion-body .mt-2 {
+  font-size: 18px !important;
 }
 
 #loading-screen {
@@ -289,6 +298,12 @@ canvas {
   width: 30px;
   height: 30px;
   margin-bottom: 5px;
+}
+
+.modelChair {
+  display: flex;
+  align-items: start;
+  text-align: end;
 }
 
 .slider-containers,
@@ -583,7 +598,7 @@ canvas {
 }
 
 .quilting_stitches {
-  position: relative; /* instead of absolute */
+  position: relative;
   height: 100%;
   transition: right 0.7s ease, opacity 0.7s ease;
   overflow: auto;
@@ -1418,6 +1433,7 @@ button#generate-pdf {
   background-color: #f5f5f5;
   cursor: pointer;
   transition: 0.3s ease;
+  gap: 10px;
 }
 
 .accordion-header:hover {
@@ -1437,6 +1453,16 @@ button#generate-pdf {
   gap: 8px;
 }
 
+.accordion-header i {
+  transition: 0.3s ease;
+  margin-left: 10px;
+}
+
+.accordion-header i.rotated {
+  transform: rotate(90deg);
+  color: #3498db;
+}
+
 .accordion-body {
   max-height: 0;
   overflow: hidden;
@@ -1446,7 +1472,7 @@ button#generate-pdf {
 
 .accordion-body.open {
   padding: 15px;
-  max-height: 1000px; /* large enough */
+  max-height: 1000px;
 }
 
 .form-group {
@@ -1594,6 +1620,7 @@ body.show-overlay .quilting-overlay {
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   display: flex;
+  flex-direction: column;
   gap: 10px;
   align-items: center;
   width: 100%;
@@ -1631,14 +1658,6 @@ body.show-overlay .quilting-overlay {
 .quilting-modal input[type="color"]::-moz-color-swatch {
   border-radius: 6px;
   border: 1px solid #ccc;
-}
-
-.color-modal,
-.stitch-modal,
-.quilting-modal {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .modals-flex {
