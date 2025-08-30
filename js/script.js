@@ -319,7 +319,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_anormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.75,
+      alpha: 0.85,
     },
     {
       name: "quilting_b",
@@ -329,7 +329,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_bnormalmap.jpg",
       repeatX: 2,
       repeatY: 2,
-      alpha: 0.91,
+      alpha: 0.93,
     },
     {
       name: "quilting_c",
@@ -340,7 +340,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_cnormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.76,
+      alpha: 0.83,
     },
     {
       name: "quilting_d",
@@ -350,7 +350,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_dnormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.7,
+      alpha: 0.79,
     },
     {
       name: "quilting_e",
@@ -360,7 +360,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_enormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.9,
+      alpha: 0.93,
     },
     {
       name: "quilting_f",
@@ -370,7 +370,7 @@ function createGUI() {
       normalMapPath: "./assets/quilting/quilting_fnormalmap.jpg",
       repeatX: 3,
       repeatY: 3,
-      alpha: 0.76,
+      alpha: 0.83,
     },
     {
       name: "quilting a s 002",
@@ -569,7 +569,9 @@ function createGUI() {
       }
 
       // Preview background too
-      preview.querySelector(".color-option").style.backgroundColor = color;
+
+      preview.querySelector(".color-option-color-name").style.backgroundColor = color;
+      preview.querySelector(".color-option-color-name").style.setProperty("--cross-color", color);
       preview.querySelector(".color-title").textContent = colorName;
     }
 

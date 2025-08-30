@@ -1669,3 +1669,52 @@ body.show-overlay .quilting-overlay {
   width: 100%;
   padding: 5px 10px;
 }
+
+#colorPreview .color-option,
+#quiltingPreview .color-option,
+#stitchPreview .color-option {
+  position: relative;
+  background-image: url(../assets/icons/color_wheel.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70px 70px;
+}
+
+#colorPreview div div,
+#quiltingPreview div div,
+#stitchPreview div div {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e6e6e6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(87, 87, 87);
+}
+
+.color-option-color-name::before,
+.color-option-color-name::after {
+  content: "";
+  position: absolute;
+  background-color: var(--cross-color, #b4b4b4); /* default */
+  border-radius: 2px;
+}
+
+#colorPreview div div::before,
+#quiltingPreview div div::before,
+#stitchPreview div div::before {
+  width: 2px;
+  height: 10px;
+}
+
+#colorPreview div div::after,
+#quiltingPreview div div::after,
+#stitchPreview div div::after {
+  width: 10px;
+  height: 2px;
+}
+
