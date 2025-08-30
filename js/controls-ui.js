@@ -88,19 +88,15 @@ const UIController = {
   },
 
   toggleSection(btn) {
-    // Toggle active button
     this.elements.buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    // Toggle active section
     Object.values(this.elements.sections).forEach((section) => section.classList.remove("active"));
     const target = this.elements.sections[btn.id];
     target.classList.add("active");
 
-    // Update materials bar with transition (click)
     this.updateMaterialsBar(btn, true);
 
-    // Event listeners for resize/orientation
     window.addEventListener("resize", () => this.updateMaterialsBar(btn, false));
     window.addEventListener("orientationchange", () => this.updateMaterialsBar(btn, false));
   },
@@ -110,7 +106,6 @@ const UIController = {
     const target = this.elements.sections[btn.id];
     const isPortraitMobile = window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
 
-    // Temporarily disable transition if called from resize/orientation
     if (!withTransition) {
       const prev = bar.style.transition;
       bar.style.transition = "none";
@@ -122,11 +117,10 @@ const UIController = {
         bar.style.right = target.classList.contains("coloring") ? "390px" : "300px";
         bar.style.bottom = "";
       }
-
-      bar.offsetHeight; // force reflow
-      bar.style.transition = prev || "all 0.5s ease"; // restore transition
+      
+      bar.offsetHeight;
+      bar.style.transition = prev || "all 0.5s ease";
     } else {
-      // Called from click → keep transition
       if (isPortraitMobile) {
         bar.style.right = "0";
         bar.style.bottom = btn.id === "colors" ? "260px" : "160px";
